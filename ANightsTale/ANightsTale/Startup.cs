@@ -32,6 +32,12 @@ namespace ANightsTale
 			});
 
 
+
+			//ToDo: Will be needed to connect to SQL 
+			//services.AddScoped<FrameworkRepo>();
+			//services.AddDbContext<Project0Context>(builder => builder.UseSqlServer(Configuration.GetConnectionString("ProjectDB")));
+
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
