@@ -2,10 +2,11 @@
 
 drop table Game.userCampaign 
 drop table Game.Info
+drop table Game.Inventory
 drop table Game.Character
 drop table Game.Race
 drop table Game.Class
-drop table Game.Inventory
+
 
 drop table Game.Item
 drop table Game.Campaign
@@ -91,20 +92,27 @@ create table Game.Character (
 
 
 create table Game.Item(
-	ItemID primary key identity,
+	ItemID int primary key identity,
 	Name nvarchar(max) not null,
-	
+	Description nvarchar(max) not null,
+	Type int not null,
+	AC int null,
+	NumDice int null,
+	NumSides int null,
+	Mods int null,
+	Effects nvarchar(max) 
 )
 
 
 
 --drop table Game.Inventory
 create table Game.Inventory(
-	InventoryID primary key identity,
 	CharacterID int not null,
 	ItemID int not null,
-	Description nvarchar(max) not null,
-
+	Quantity int not null,
+	ToggleE bit default(0),
+	constraint FK_I_to_Char foreign key (CharacterID) references Game.Character(CharacterID) on update cascade on delete cascade,
+	constraint Fk_I_to_Item foreign key (ItemID) references Game.Item(ItemID) on update cascade on delete cascade
 )
 
 
