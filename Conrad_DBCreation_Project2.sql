@@ -4,6 +4,7 @@ CREATE TABLE Game.CharStats (
 	HP INT NOT NULL,
 	AC INT NOT NULL,
 	PB INT NOT NULL,
+	Gold INT NOT NULL,
 	Acrobatics iNT NOT NULL,
 	AnimalHandling INT NOT NULL,
 	Arcana INT NOT NULL,
