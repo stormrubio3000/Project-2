@@ -38,7 +38,7 @@ namespace ANightsTale.DataAccess
             modelBuilder.Entity<Abilities>(entity =>
             {
                 entity.HasKey(e => e.AbilityId)
-                    .HasName("PK__Abilitie__88B2505FDA13DE90");
+                    .HasName("PK__Abilitie__88B2505F5E962D0C");
 
                 entity.ToTable("Abilities", "Game");
 
@@ -52,7 +52,7 @@ namespace ANightsTale.DataAccess
                 entity.ToTable("Campaign", "Game");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__Campaign__737584F635D86DF2")
+                    .HasName("UQ__Campaign__737584F6EA682E5D")
                     .IsUnique();
 
                 entity.Property(e => e.CampaignId).HasColumnName("CampaignID");
@@ -178,6 +178,8 @@ namespace ANightsTale.DataAccess
 
                 entity.Property(e => e.RaceId).HasColumnName("RaceID");
 
+                entity.Property(e => e.UsersId).HasColumnName("UsersID");
+
                 entity.HasOne(d => d.Campaign)
                     .WithMany(p => p.Character)
                     .HasForeignKey(d => d.CampaignId)
@@ -192,6 +194,11 @@ namespace ANightsTale.DataAccess
                     .WithMany(p => p.Character)
                     .HasForeignKey(d => d.RaceId)
                     .HasConstraintName("FK_Char_to_Race");
+
+                entity.HasOne(d => d.Users)
+                    .WithMany(p => p.Character)
+                    .HasForeignKey(d => d.UsersId)
+                    .HasConstraintName("Fk_Char_to_User");
             });
 
             modelBuilder.Entity<Class>(entity =>
@@ -210,7 +217,7 @@ namespace ANightsTale.DataAccess
             modelBuilder.Entity<Feats>(entity =>
             {
                 entity.HasKey(e => e.FeatId)
-                    .HasName("PK__Feats__D53F25EE525FA6F5");
+                    .HasName("PK__Feats__D53F25EEE27F36AE");
 
                 entity.ToTable("Feats", "Game");
 
@@ -222,7 +229,7 @@ namespace ANightsTale.DataAccess
             modelBuilder.Entity<Info>(entity =>
             {
                 entity.HasKey(e => e.GameId)
-                    .HasName("PK__Info__2AB897DD9C728923");
+                    .HasName("PK__Info__2AB897DD3B10BD25");
 
                 entity.ToTable("Info", "Game");
 
@@ -245,7 +252,7 @@ namespace ANightsTale.DataAccess
             modelBuilder.Entity<Inventory>(entity =>
             {
                 entity.HasKey(e => new { e.CharacterId, e.ItemId })
-                    .HasName("PK__Inventor__D25C227E52607F91");
+                    .HasName("PK__Inventor__D25C227E77961F59");
 
                 entity.ToTable("Inventory", "Game");
 
@@ -295,7 +302,7 @@ namespace ANightsTale.DataAccess
             modelBuilder.Entity<UserCampaign>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.CampaignId })
-                    .HasName("PK__userCamp__947D247BF8BB3485");
+                    .HasName("PK__userCamp__947D247B0FE0E99F");
 
                 entity.ToTable("userCampaign", "Game");
 
@@ -321,7 +328,7 @@ namespace ANightsTale.DataAccess
                 entity.ToTable("Users", "Game");
 
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__Users__536C85E454FE5AD9")
+                    .HasName("UQ__Users__536C85E43FF12780")
                     .IsUnique();
 
                 entity.Property(e => e.UsersId).HasColumnName("UsersID");

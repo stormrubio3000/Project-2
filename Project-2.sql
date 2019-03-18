@@ -80,6 +80,7 @@ create table Game.Class(
 create table Game.Character (
 	CharacterID int primary key identity,
 	Name nvarchar(75) not null,
+	UsersID int not null,
 	CampaignID int not null,
 	RaceID int not null,
 	ClassID int not null,
@@ -95,7 +96,8 @@ create table Game.Character (
 	MaxHP int not null,
 	constraint FK_Char_to_C foreign key (CampaignID) references Game.Campaign(CampaignID) on update cascade on delete cascade,
 	constraint FK_Char_to_Race foreign key (RaceID) references Game.Race(RaceID) on update cascade on delete cascade,
-	constraint Fk_Char_to_Class foreign key (ClassID) references Game.Class(ClassID) on update cascade on delete cascade
+	constraint Fk_Char_to_Class foreign key (ClassID) references Game.Class(ClassID) on update cascade on delete cascade,
+	constraint Fk_Char_to_User foreign key (UsersID) references Game.Users(UsersID) on update cascade on delete cascade
 )
 
 
