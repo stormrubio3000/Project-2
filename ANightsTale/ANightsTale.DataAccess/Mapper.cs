@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ANightsTale.Library;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ANightsTale.DataAccess
@@ -147,5 +149,66 @@ namespace ANightsTale.DataAccess
             Name = r.Name,
             Description = r.Name
         };
+
+        public static Library.Abilities Map(Abilities r) => new Library.Abilities
+        {
+            AbilityID = r.AbilityId,
+            Name = r.Name,
+            Description = r.Name,
+            NumDice = r.NumDice,
+            NumSides = r.NumSides,
+            Attack = r.Attack
+        };
+
+        public static Abilities Map(Library.Abilities r) => new Abilities
+        {
+            AbilityId = r.AbilityID,
+            Name = r.Name,
+            Description = r.Name,
+            NumDice = r.NumDice,
+            NumSides = r.NumSides,
+            Attack = r.Attack
+        };
+
+        public static IEnumerable<Library.Abilities> Map(IEnumerable<Abilities> abilities) => abilities.Select(Map);
+        public static IEnumerable<Abilities> Map(IEnumerable<Library.Abilities> abilities) => abilities.Select(Map);
+
+        public static Library.Item Map(Item r) => new Library.Item
+        {
+            ItemID = r.ItemId,
+            Name = r.Name,
+            Description = r.Name,
+            NumDice = r.NumDice,
+            NumSides = r.NumSides,
+            Mods = r.Mods
+        };
+
+        public static Item Map(Library.Item r) => new Item
+        {
+            ItemId = r.ItemID,
+            Name = r.Name,
+            Description = r.Name,
+            NumDice = r.NumDice,
+            NumSides = r.NumSides,
+            Mods = r.Mods
+        };
+
+        public static IEnumerable<Library.Item> Map(IEnumerable<Item> item) => item.Select(Map);
+        public static IEnumerable<Item> Map(IEnumerable<Library.Item> item) => item.Select(Map);
+
+        public static Library.Campaign Map(Campaign r) => new Library.Campaign
+        {
+            CampaingID = r.CampaignId,
+            Name = r.Name,
+        };
+
+        public static Campaign Map(Library.Campaign r) => new Campaign
+        {
+            CampaignId = r.CampaingID,
+            Name = r.Name,
+        };
+
+        public static IEnumerable<Library.Campaign> Map(IEnumerable<Campaign> campaign) => campaign.Select(Map);
+        public static IEnumerable<Campaign> Map(IEnumerable<Library.Campaign> campaign) => campaign.Select(Map);
     }
 }
