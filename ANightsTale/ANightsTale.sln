@@ -9,6 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale", "ANightsTale\
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{2CBFA409-B9B5-4821-8385-533539EF56A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD} = {0817A39D-E21A-4D32-9A07-20CB9E7857AD}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.Library", "ANightsTale.Library\ANightsTale.Library.csproj", "{0817A39D-E21A-4D32-9A07-20CB9E7857AD}"
 EndProject
