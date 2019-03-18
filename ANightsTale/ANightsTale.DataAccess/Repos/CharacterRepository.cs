@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ANightsTale.Library;
+using ANightsTale.Library.Interfaces;
 
 namespace ANightsTale.DataAccess.Repos
 {
@@ -17,17 +18,17 @@ namespace ANightsTale.DataAccess.Repos
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Character> GetAllCharacters()
+        public IEnumerable<Library.Character> GetAllCharacters()
         {
             throw new NotImplementedException();
         }
 
-        public Character GetCharacterById(int id)
+        public Library.Character GetCharacterById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Character GetCharacterByName(string name)
+        public Library.Character GetCharacterByName(string name)
         {
             throw new NotImplementedException();
         }
@@ -61,20 +62,5 @@ namespace ANightsTale.DataAccess.Repos
         {
             throw new NotImplementedException();
         }
-
-		IEnumerable<Library.Character> ICharacterRepository.GetAllCharacters()
-		{
-			throw new NotImplementedException();
-		}
-
-		Library.Character ICharacterRepository.GetCharacterById(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		Library.Character ICharacterRepository.GetCharacterByName(string name)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
