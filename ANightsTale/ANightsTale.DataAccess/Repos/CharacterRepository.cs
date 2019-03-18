@@ -7,6 +7,7 @@ namespace ANightsTale.DataAccess.Repos
 {
     public class CharacterRepository : ICharacterRepository
     {
+
         public void CreateCharacter()
         {
             throw new NotImplementedException();
