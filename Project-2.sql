@@ -236,7 +236,7 @@ insert into Game.Class(Name,Description) values
 	('Cleric', 'A priestly champion who wields divine magic in service of a higher power.'),
 	('Druid', 'A priest of the Old Faith, wielding the powers of nature—moonlight and plant growth, fire and lightning—and adopting animal forms.'),
 	('Ranger', 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.'),
-	('Rouge', 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.'),
+	('Rogue', 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.'),
 	('Wizard', 'A scholarly magic-user capable of manipulating the structures of reality')
 
 insert into Game.Race(Name,Description) values 
