@@ -165,7 +165,7 @@ CREATE TABLE Game.CharStats (
 	WIS_Mod INT NOT NULL,
 	CHA_Mod INT NOT NULL
 	CONSTRAINT Stats_To_Char FOREIGN KEY (CharacterID) 
-		REFERENCES Game.Character (CharacterID) ON DELETE CASCADE
+		REFERENCES Game.Character (CharacterID) ON DELETE CASCADE on update cascade
 );
 
 
@@ -183,8 +183,8 @@ CREATE TABLE Game.CharAbilities (
 	AbilityID INT NOT NULL,
 	Mods INT
 	CONSTRAINT PK_CharAbilities PRIMARY KEY (CharacterID, AbilityID),
-	CONSTRAINT FK_CharAb_To_Character FOREIGN KEY (CharacterID) REFERENCES Game.Character (CharacterID),
-	CONSTRAINT FK_CharAb_To_Abilities FOREIGN KEY (AbilityID) REFERENCES Game.Abilities (AbilityID)
+	CONSTRAINT FK_CharAb_To_Character FOREIGN KEY (CharacterID) REFERENCES Game.Character (CharacterID) on delete cascade on update cascade,
+	CONSTRAINT FK_CharAb_To_Abilities FOREIGN KEY (AbilityID) REFERENCES Game.Abilities (AbilityID) on delete cascade on update cascade
 );
 
 CREATE TABLE Game.Feats (
@@ -200,8 +200,8 @@ CREATE TABLE Game.CharFeats (
 	CharacterID INT NOT NULL,
 	FeatID INT NOT NULL,
 	CONSTRAINT PK_CharFeats PRIMARY KEY (CharacterID, FeatID),
-	CONSTRAINT FK_CharFeat_To_Character FOREIGN KEY (CharacterID) REFERENCES Game.Character (CharacterID),
-	CONSTRAINT FK_CharFeat_To_Feats FOREIGN KEY (FeatID) REFERENCES Game.Feats (FeatID)
+	CONSTRAINT FK_CharFeat_To_Character FOREIGN KEY (CharacterID) REFERENCES Game.Character (CharacterID) on delete cascade on update cascade,
+	CONSTRAINT FK_CharFeat_To_Feats FOREIGN KEY (FeatID) REFERENCES Game.Feats (FeatID) on delete cascade on update cascade
 );
 
 insert into Game.Users (Username, Password, Email) values 
@@ -251,8 +251,51 @@ insert into Game.Race(Name,Description) values
 
 
 
---insert into Game.Character(Name,CampaignID,RaceID,ClassID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
-	--(
+insert into Game.Character(Name,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
+	('sparticustard', 1,3,5,1,17,15,12,7,9,12,30,12),
+	('ANERD', 1,1,1,2,22,5,19,13,4,3,30,10)
+
+
+insert into Game.Abilities(Name,Description,NumDice,NumSides,Attack) values
+	('Bash', 'The Warrior strikes down on the head of their foe with a reckless fury',null,null,1),
+	('FireBolt', 'The Mage unleashes a bolt of fire to scorch their foes.',1,10,1),
+	('Teleport', 'The Mage teleports away in a poof of smoke.',null,null,0)
+
+
+insert into Game.CharAbilities(CharacterID,AbilityID,Mods) values
+	(1,1,5),
+	(2,2,0),
+	(2,3,null)
+
+
+insert into Game.Feats(Name,Description,StatTable,StatType,Mods) values
+	('Im not sure where this goes', 'But it will be a thing somewhere',0,4,1),
+	('This will also be a place','When I find out where this will change',1,2,1)
+
+
+insert into Game.CharFeats(CharacterID,FeatID) values
+	(1,2),
+	(2,1)
+
+
+insert into Game.Item(Name,Description,Type,AC,NumDice,NumSides,Mods,Effects) values
+	('Longsword', 'A standard Longsword', 1,null,1,8,0,'No Effects'),
+	('Candle','You no take!',3000,null,null,null,null,'Cannot be taken'),
+	('SplintMail','Standard Splint linked mail',2000,14,null,null,0,'No Effects')
+
+
+insert into Game.Inventory(CharacterID,ItemID,Quantity,ToggleE) values 
+	(1,1,1,1),
+	(1,3,1,1),
+	(2,2,10,0)
+
+
+insert into Game.CharStats(CharacterID,HP,AC,PB,Gold,Acrobatics,AnimalHandling,Arcana,Athletics,Deception,History,
+Insight,Intimidation,Investigation,Medicine,Nature,Perception,Performance,Persuasion,Religion,SleightOfHand,Stealth,
+Survival,STR_Save,DEX_Save,CON_Save,INT_Save,WIS_Save,CHA_Save,STR_Mod,DEX_Mod,CON_Mod,INT_Mod,WIS_Mod,CHA_Mod) values
+	(1,12,10,2,0,1,2,1,2,3,1,2,3,2,1,2,3,1,2,3,2,1,2,3,2,2,2,1,2,1,2,1,2,1,1),
+	(2,10,11,2,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,3,2,1,2,1,2,2,2,1,2,3,2,1,3,1,1)
+
 
 select * from Game.Info
 select * from Game.userCampaign
@@ -260,3 +303,11 @@ select * from Game.Users
 select * from Game.Campaign
 select * from Game.Class
 select * from Game.Race
+select * from Game.Character
+select * from Game.Abilities
+select * from Game.CharAbilities
+select * from Game.Feats
+select * from Game.CharFeats
+select * from Game.Inventory
+select * from Game.Item
+
