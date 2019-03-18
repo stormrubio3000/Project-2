@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ANightsTale.Library
 {
-    class Race
+    public class Race
     {
         public int RaceID { get; set; }
         public string Name { get; set; }
