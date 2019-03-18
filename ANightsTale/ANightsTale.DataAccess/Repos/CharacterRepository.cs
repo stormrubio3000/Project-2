@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ANightsTale.Library;
 using ANightsTale.Library.Interfaces;
 
@@ -8,29 +9,46 @@ namespace ANightsTale.DataAccess.Repos
 	public class CharacterRepository : ICharacterRepository
     {
 
-        public void CreateCharacter()
+        private readonly ANightsTaleContext _db;
+
+        public CharacterRepository(ANightsTaleContext db)
         {
-            throw new NotImplementedException();
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void DeleteCharacter()
+        public void CreateCharacter(Library.Character character)
         {
-            throw new NotImplementedException();
+            _db.Add(Mapper.Map(character));
+        }
+
+        public void DeleteCharacter(Library.Character character)
+        {
+            _db.Remove(Mapper.Map(character));
         }
 
         public IEnumerable<Library.Character> GetAllCharacters()
-        {
-            throw new NotImplementedException();
+        {        
+            return Mapper.Map(_db.Character);
         }
 
         public Library.Character GetCharacterById(int id)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Character.First(c => c.CharacterId == id));
         }
 
         public Library.Character GetCharacterByName(string name)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
+        }
+
+        public void SetRace(Library.Race r)
+        {
+            _db.Character.Last().RaceId = r.RaceID;
+        }
+
+        public void SetClass(Library.Class c)
+        {
+            _db.Character.Last().ClassId = c.ClassID;
         }
 
         public void InitialRolls(int id)
@@ -60,7 +78,7 @@ namespace ANightsTale.DataAccess.Repos
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _db.SaveChanges();
         }
-	}
+    }
 }

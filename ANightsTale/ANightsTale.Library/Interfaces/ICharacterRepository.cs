@@ -6,12 +6,15 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface ICharacterRepository
     {
-        void CreateCharacter();
-        void DeleteCharacter();
+        void CreateCharacter(Character character);
+        void DeleteCharacter(Character character);
 
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
+
+        void SetRace(Race r);
+        void SetClass(Class c);
 
         void RandomInitialRolls(int id);
         void InitialRolls(int id);

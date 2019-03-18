@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ANightsTale.DataAccess
@@ -147,5 +148,8 @@ namespace ANightsTale.DataAccess
             Name = r.Name,
             Description = r.Name
         };
+
+        public static IEnumerable<Library.Character> Map(IEnumerable<Character> characters) => characters.Select(Map);
+        public static IEnumerable<Character> Map(IEnumerable<Library.Character> characters) => characters.Select(Map);
     }
 }
