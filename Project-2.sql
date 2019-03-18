@@ -203,7 +203,58 @@ CREATE TABLE Game.CharFeats (
 );
 
 insert into Game.Users (Username, Password, Email) values 
-('this','thing','sucks')
+	('Lee2382','totallylegitpassword.exe','Arealemail@nmail'),
+	('thatoneguy2','password.virus','areemailsreal@lol.com')
+
+insert into Game.Users (Username, Password, Email, Permission) values 
+	('LeetHazer45','123abc','youcantmakeme@no',1)
 
 
+insert into Game.Campaign (Name) values
+	('1001 tales')
+
+
+
+insert into Game.userCampaign(CampaignID,UserID) values 
+	(1,1),
+	(1,2),
+	(1,3)
+
+
+insert into Game.Info (CampaignID,type,Message) values
+	(1,'intro','So there was this one time at band camp')
+
+
+insert into Game.Class(Name,Description) values 
+	('Barbarian', 'A fierce warrior of primitive background who can enter a battle rage.'),
+	('Fighter','A master of martial combat, skilled with a variety of weapons and armor.'),
+	('Paladin','A holy warrior bound to a sacred oath.'),
+	('Bard', 'An inspiring magician whose power echoes the music of creation.'),
+	('Sorcerer', 'A spellcaster who draws on inherent magic from a gift or bloodline.'),
+	('Cleric', 'A priestly champion who wields divine magic in service of a higher power.'),
+	('Druid', 'A priest of the Old Faith, wielding the powers of nature—moonlight and plant growth, fire and lightning—and adopting animal forms.'),
+	('Ranger', 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.'),
+	('Rouge', 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.'),
+	('Wizard', 'A scholarly magic-user capable of manipulating the structures of reality')
+
+insert into Game.Race(Name,Description) values 
+	('Dwarf', 'Dwarves are solid and enduring like the mountains they love, weathering the passage of centuries with stoic endurance and little change.'),
+	('Human', 'Whatever drives them, humans are the innovators, the achievers, and the pioneers of the worlds.'),
+	('Elf', 'Elves are a magical people of otherworldly grace, living in the world but not entirely part of it.'),
+	('Halfling', 'The comforts of home are the goals of most halflings’ lives: a place to settle in peace and quiet, far from marauding monsters and clashing armies.'),
+	('Gnomes', 'Gnomes take delight in life, enjoying every moment of invention, exploration, investigation, creation, and play.'),
+	('Half-Orc', 'Half-orcs are not evil by nature, but evil does lurk within them, whether they embrace it or rebel against it.')
+
+
+
+
+
+--insert into Game.Character(Name,CampaignID,RaceID,ClassID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
+	--(
+
+select * from Game.Info
+select * from Game.userCampaign
 select * from Game.Users
+select * from Game.Campaign
+select * from Game.Class
+select * from Game.Race
