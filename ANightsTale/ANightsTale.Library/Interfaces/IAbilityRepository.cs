@@ -13,6 +13,13 @@ namespace ANightsTale.Library.Interfaces
         Abilities GetAbilityById(int id);
         Abilities GetAbilityByName(string name);
 
+        void CreateFeat();
+        void DeleteFeat();
+
+        IEnumerable<Feats> GetAllFeat();
+        Feats GetFeatById(int id);
+        Feats GetFeatByName(string name);
+
         void SetNumberDice();
         void SetNumberSides();
         bool IsAttack();

@@ -13,7 +13,17 @@ namespace ANightsTale.DataAccess.Repos
             throw new NotImplementedException();
         }
 
+        public void CreateFeat()
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteFeat()
         {
             throw new NotImplementedException();
         }
@@ -29,6 +39,21 @@ namespace ANightsTale.DataAccess.Repos
         }
 
         public IEnumerable<Abilities> GetAllAbilities()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Feats GetFeatById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Feats GetFeatByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Feats> GetAllFeats()
         {
             throw new NotImplementedException();
         }
@@ -53,17 +78,17 @@ namespace ANightsTale.DataAccess.Repos
             throw new NotImplementedException();
         }
 
+        IEnumerable<Library.Abilities> IAbilityRepository.GetAllAbilities()
+        {
+            throw new NotImplementedException();
+        }
+
         Library.Abilities IAbilityRepository.GetAbilityById(int id)
         {
             throw new NotImplementedException();
         }
 
         Library.Abilities IAbilityRepository.GetAbilityByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Library.Abilities> IAbilityRepository.GetAllAbilities()
         {
             throw new NotImplementedException();
         }
