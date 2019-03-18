@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using ANightsTale.Library;
 
 namespace ANightsTale.DataAccess.Repos
 {
-    public class CharacterRepository : ICharacterRepository
+	public class CharacterRepository : ICharacterRepository
     {
         public void CreateCharacter()
         {
@@ -61,5 +60,20 @@ namespace ANightsTale.DataAccess.Repos
         {
             throw new NotImplementedException();
         }
-    }
+
+		IEnumerable<Library.Character> ICharacterRepository.GetAllCharacters()
+		{
+			throw new NotImplementedException();
+		}
+
+		Library.Character ICharacterRepository.GetCharacterById(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		Library.Character ICharacterRepository.GetCharacterByName(string name)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

@@ -8,11 +8,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale", "ANightsTale\
 		{2CBFA409-B9B5-4821-8385-533539EF56A6} = {2CBFA409-B9B5-4821-8385-533539EF56A6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{2CBFA409-B9B5-4821-8385-533539EF56A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{2CBFA409-B9B5-4821-8385-533539EF56A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD} = {0817A39D-E21A-4D32-9A07-20CB9E7857AD}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTale.Library", "ANightsTale.Library\ANightsTale.Library.csproj", "{0817A39D-E21A-4D32-9A07-20CB9E7857AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{6318CABD-116A-47BC-AB9F-B46443657FE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.Library", "ANightsTale.Library\ANightsTale.Library.csproj", "{0817A39D-E21A-4D32-9A07-20CB9E7857AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +29,10 @@ Global
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0817A39D-E21A-4D32-9A07-20CB9E7857AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
