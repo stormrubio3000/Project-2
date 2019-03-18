@@ -280,10 +280,32 @@ insert into Game.CharFeats(CharacterID,FeatID) values
 
 insert into Game.Item(Name,Description,Type,AC,NumDice,NumSides,Mods,Effects) values
 	('Longsword', 'A standard Longsword', 1,null,1,8,0,'No Effects'),
-	('Candle','You no take!',3000,null,null,null,null,'Cannot be taken'),
-	('SplintMail','Standard Splint linked mail',2000,14,null,null,0,'No Effects')
+	('Spear', 'A standard Spear',1,null,1,6,0,'No Effects'),
+	('BattleAxe', 'A standard BattleAxe',1,null,1,8,0,'No Effects'),
+	('Club', 'A standard Club',1,null,1,4,0,'No Effects'),
+	('Dagger', 'A standard Dagger',1,null,1,4,0,'No Effects'),
+	('Dart', 'A standard Dart',1,null,1,4,0,'No Effects'),
+	('Flail', 'A standard Flail',1,null,1,8,0,'No Effects'),
+	('GreatSword', 'A standard GreatSword',1,null,2,6,0,'No Effects'),
+	('Halberd', 'A standard Halberd',1,null,1,10,0,'No Effects'),
+	('Longbow','A standard Longbow', 1,null,1,8,0,'No Effects'),
+	('QuarterStaff', 'A standard Quarterstaff',1,null,1,6,0,'No Effects'),
+	('Shortbow', 'A standard Shortbow',1,null,1,6,0,'No Effects'),
+	('Shortsword', 'A standard Shortsword',1,null,1,6,0,'No Effects'),
+	('Sling', 'A standard Sling', 1,null,1,4,0,'No Effects'),
+	('Spear', 'A standard Spear', 1,null,1,6,0,'No Effects'),
+	('Warhammer', 'A standard Warhammer', 1,null,1,8,0,'No Effects'),
+	('SplintMail','A standard SplintMail armor',2,17,null,null,0,'No Effects'),
+	('Studded Leather', 'A standard Studded Leather Armor',2,12,null,null,0,'No Effects'),
+	('ChainMail', 'A standard ChainMail armor',2,16,null,null,0,'No Effects'),
+	('Leather', 'A standard Leather armor', 2,11,null,null,0,'No Effects'),
+	('Plate', 'A standard Plate armor', 2,18,null,null,0,'No Effects'),
+	('Candle','You no take!',3000,null,null,null,null,'Cannot be taken')
 
 
+
+
+--1. weapons 2. Armor 3. Rings  4. Amulets  5. Helmets  6. Boots  7. Misc
 insert into Game.Inventory(CharacterID,ItemID,Quantity,ToggleE) values 
 	(1,1,1,1),
 	(1,3,1,1),
