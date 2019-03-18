@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTale", "ANightsTale\ANightsTale.csproj", "{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale", "ANightsTale\ANightsTale.csproj", "{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2CBFA409-B9B5-4821-8385-533539EF56A6} = {2CBFA409-B9B5-4821-8385-533539EF56A6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{2CBFA409-B9B5-4821-8385-533539EF56A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

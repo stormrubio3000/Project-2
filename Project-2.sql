@@ -1,19 +1,21 @@
 --create schema Game
 
-drop table Game.userCampaign 
-drop table Game.Info
-drop table Game.Inventory
+
+
+
+
+drop table Game.CharFeats
+drop table Game.CharAbilities
 drop table Game.CharStats
+drop table Game.Feats
+drop table Game.Abilities
+drop table Game.Inventory
+drop table Game.Item
 drop table Game.Character
 drop table Game.Race
 drop table Game.Class
-drop table Game.CharAbilities
-drop table Game.CharFeats
-drop table Game.Feats
-drop table Game.Abilities
-
-
-drop table Game.Item
+drop table Game.userCampaign 
+drop table Game.Info
 drop table Game.Campaign
 drop table Game.Users
 
@@ -50,6 +52,7 @@ create table Game.userCampaign (
 
 --drop table Game.Info
 create table Game.Info(
+	GameID int primary key identity,
 	Type nvarchar(50) not null,
 	Message nvarchar(max) not null,
 	CampaignID int not null,
@@ -117,7 +120,8 @@ create table Game.Inventory(
 	Quantity int not null,
 	ToggleE bit default(0),
 	constraint FK_I_to_Char foreign key (CharacterID) references Game.Character(CharacterID) on update cascade on delete cascade,
-	constraint Fk_I_to_Item foreign key (ItemID) references Game.Item(ItemID) on update cascade on delete cascade
+	constraint Fk_I_to_Item foreign key (ItemID) references Game.Item(ItemID) on update cascade on delete cascade,
+	primary key (CharacterID, ItemID)
 )
 
 
