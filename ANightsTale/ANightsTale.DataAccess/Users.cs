@@ -7,6 +7,7 @@ namespace ANightsTale.DataAccess
     {
         public Users()
         {
+            Character = new HashSet<Character>();
             UserCampaign = new HashSet<UserCampaign>();
         }
 
@@ -16,6 +17,7 @@ namespace ANightsTale.DataAccess
         public int? Permission { get; set; }
         public string Email { get; set; }
 
+        public virtual ICollection<Character> Character { get; set; }
         public virtual ICollection<UserCampaign> UserCampaign { get; set; }
     }
 }
