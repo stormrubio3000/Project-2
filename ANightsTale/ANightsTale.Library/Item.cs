@@ -11,9 +11,9 @@ namespace ANightsTale.Library
         public string Description { get; set; }
         public int Type { get; set; }
         public int AC { get; set; }
-        public int NumDice { get; set; }
-        public int NumSides { get; set; }
-        public int Mods { get; set; }
+        public int? NumDice { get; set; }
+        public int? NumSides { get; set; }
+        public int? Mods { get; set; }
         public string Effects { get; set; }
     }
 }
