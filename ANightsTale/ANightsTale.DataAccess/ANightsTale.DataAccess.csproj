@@ -12,4 +12,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ANightsTale.Library\ANightsTale.Library.csproj" />
+  </ItemGroup>
+
 </Project>
