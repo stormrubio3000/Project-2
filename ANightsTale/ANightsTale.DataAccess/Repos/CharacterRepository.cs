@@ -27,11 +27,21 @@ namespace ANightsTale.DataAccess.Repos
             _db.Remove(Mapper.Map(character));
         }
 
-        public void CreateCharacter(string name, string bio = null)
-        {
-            var character = new Library.Character();
-            character.Name = name;
-        }
+        //public void CreateCharacter(string name, IEnumerable<int> rolls,
+        //                            int raceId, int classId, string bio = null)
+        //{
+        //    var character = new Library.Character();
+
+        //    character.Name = name;
+        //    character.Bio = bio;
+        //    character.Experience = 0;
+        //    character.Level = 1;
+
+        //    AddCharacter(character);
+        //    SetRolls(rolls);
+        //    SetRace(raceId);
+        //    SetClass(classId);
+        //}
 
         public IEnumerable<Library.Character> GetAllCharacters()
         {        
@@ -48,12 +58,12 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
         }
 
-        public void SetRace(Library.Race r)
+        public void SetRace(int raceId)
         {
             var character = _db.Character.Last();
-            character.RaceId = r.RaceID;
+            character.RaceId = raceId;
 
-            switch(r.RaceID)
+            switch(raceId)
             {
                 case 1:
                     //Dwarf
@@ -84,9 +94,9 @@ namespace ANightsTale.DataAccess.Repos
             }
         }
 
-        public void SetClass(Library.Class c)
+        public void SetClass(int classId)
         {
-            _db.Character.Last().ClassId = c.ClassID;
+            _db.Character.Last().ClassId = classId;
         }
 
         public void SetRolls(IEnumerable<int> rolls)
@@ -100,6 +110,26 @@ namespace ANightsTale.DataAccess.Repos
             character.Int = attributes[3];
             character.Wis = attributes[4];
             character.Cha = attributes[5];
+        }
+
+        public void SetInitialHp()
+        {
+            var character = _db.Character.Last();
+
+            // Barbarian
+            if (character.ClassId == 1) character.MaxHp = 12;
+            // Fighter, Paladin, Ranger
+            else if (character.ClassId == 2 || 
+                     character.ClassId == 3 ||
+                     character.ClassId == 8) character.MaxHp = 10;
+            // Bard, Cleric, Druid, Rogue
+            else if (character.ClassId == 4 ||
+                     character.ClassId == 6 ||
+                     character.ClassId == 7 ||
+                     character.ClassId == 9) character.MaxHp = 8;
+            // Sorcerer, Wizard
+            else if (character.ClassId == 5 ||
+                     character.ClassId == 10) character.MaxHp = 6;
         }
 
         public IEnumerable<int> InitialRolls()
