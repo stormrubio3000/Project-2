@@ -13,6 +13,8 @@ namespace ANightsTale.DataAccess
         public int AbilityId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int RequiredLv { get; set; }
+        public int RequiredClass { get; set; }
         public int? NumDice { get; set; }
         public int? NumSides { get; set; }
         public bool? Attack { get; set; }

@@ -5,7 +5,7 @@ namespace ANightsTale.DataAccess
 {
     public partial class Info
     {
-        public int GameId { get; set; }
+        public int InfoId { get; set; }
         public string Type { get; set; }
         public string Message { get; set; }
         public int CampaignId { get; set; }
