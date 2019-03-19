@@ -52,7 +52,7 @@ create table Game.userCampaign (
 
 --drop table Game.Info
 create table Game.Info(
-	GameID int primary key identity,
+	InfoID int primary key identity,
 	Type nvarchar(50) not null,
 	Message nvarchar(max) not null,
 	CampaignID int not null,
@@ -80,6 +80,7 @@ create table Game.Class(
 create table Game.Character (
 	CharacterID int primary key identity,
 	Name nvarchar(75) not null,
+	Bio nvarchar(max) null,
 	UsersID int not null,
 	CampaignID int not null,
 	RaceID int not null,
@@ -169,10 +170,13 @@ CREATE TABLE Game.CharStats (
 );
 
 
+
 CREATE TABLE Game.Abilities (
 	AbilityID INT PRIMARY KEY IDENTITY,
 	Name NVARCHAR(MAX) NOT NULL,
 	Description NVARCHAR(MAX) NULL,
+	RequiredLV int not null,
+	RequiredClass int not null,
 	NumDice INT NULL,
 	NumSides INT NULL,
 	Attack BIT
@@ -191,6 +195,8 @@ CREATE TABLE Game.Feats (
 	FeatID INT PRIMARY KEY IDENTITY,
 	Name NVARCHAR(MAX) NOT NULL,
 	Description NVARCHAR(MAX),
+	RequiredLV int not null,
+	RequiredClass int not null,
 	StatTable BIT NOT NULL,
 	StatType INT NOT NULL,
 	Mods INT NOT NULL
@@ -256,10 +262,10 @@ insert into Game.Character(Name,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,In
 	('ANERD', 1,1,1,2,22,5,19,13,4,3,30,10)
 
 
-insert into Game.Abilities(Name,Description,NumDice,NumSides,Attack) values
-	('Bash', 'The Warrior strikes down on the head of their foe with a reckless fury',null,null,1),
-	('FireBolt', 'The Mage unleashes a bolt of fire to scorch their foes.',1,10,1),
-	('Teleport', 'The Mage teleports away in a poof of smoke.',null,null,0)
+insert into Game.Abilities(Name,Description,RequiredClass,RequiredLV,NumDice,NumSides,Attack) values
+	('Bash', 'The Warrior strikes down on the head of their foe with a reckless fury',1,1,null,null,1),
+	('FireBolt', 'The Mage unleashes a bolt of fire to scorch their foes.',1,2,1,10,1),
+	('Teleport', 'The Mage teleports away in a poof of smoke.',3,2,null,null,0)
 
 
 insert into Game.CharAbilities(CharacterID,AbilityID,Mods) values
@@ -268,9 +274,9 @@ insert into Game.CharAbilities(CharacterID,AbilityID,Mods) values
 	(2,3,null)
 
 
-insert into Game.Feats(Name,Description,StatTable,StatType,Mods) values
-	('Im not sure where this goes', 'But it will be a thing somewhere',0,4,1),
-	('This will also be a place','When I find out where this will change',1,2,1)
+insert into Game.Feats(Name,Description,RequiredLV,RequiredClass,StatTable,StatType,Mods) values
+	('Im not sure where this goes', 'But it will be a thing somewhere',1,1,0,4,1),
+	('This will also be a place','When I find out where this will change',1,2,1,2,1)
 
 
 insert into Game.CharFeats(CharacterID,FeatID) values
@@ -295,12 +301,26 @@ insert into Game.Item(Name,Description,Type,AC,NumDice,NumSides,Mods,Effects) va
 	('Sling', 'A standard Sling', 1,null,1,4,0,'No Effects'),
 	('Spear', 'A standard Spear', 1,null,1,6,0,'No Effects'),
 	('Warhammer', 'A standard Warhammer', 1,null,1,8,0,'No Effects'),
+	('Flame Tongue', 'A Sword covered in writhing flames',1,null,3,8,1,'Sheds a bright light within a 40-foot radius'),
 	('SplintMail','A standard SplintMail armor',2,17,null,null,0,'No Effects'),
 	('Studded Leather', 'A standard Studded Leather Armor',2,12,null,null,0,'No Effects'),
 	('ChainMail', 'A standard ChainMail armor',2,16,null,null,0,'No Effects'),
 	('Leather', 'A standard Leather armor', 2,11,null,null,0,'No Effects'),
 	('Plate', 'A standard Plate armor', 2,18,null,null,0,'No Effects'),
-	('Candle','You no take!',3000,null,null,null,null,'Cannot be taken')
+	('Demon Armor','A suit of armor made from the scales of slain demons',2,19,null,null,0,'Can speak Infernal while wearing the armor'),
+	('Copper Ring', 'A ring made of copper', 3,0,null,null,null, 'No Effects'),
+	('Silver Ring', 'A ring made of Silver', 3,0,null,null,null, 'No Effects'),
+	('Gold Ring', 'A ring made of Gold', 3,0,null,null,null, 'No Effects'),
+	('Ring of WaterBreathing', 'A Ring made from a gil of a Mermaid',3,0,null,null,null,'Can breath underwater while wearing'),
+	('Copper Necklace', 'A Necklace made of copper', 4,0,null,null,null, 'No Effects'),
+	('Silver Necklace', 'A Necklace made of Silver', 4,0,null,null,null, 'No Effects'),
+	('Gold Necklace', 'A Necklace made of Gold', 4,0,null,null,null, 'No Effects'),
+	('Amulet of Stone','A Elemental stone held together by a clasp',4,1,null,null,null,'Adds +1 to AC'),
+	('Iron Helmet', 'A standard Helmet made of iron',5,0,null,null,null,'No Effects'),
+	('Helm of NightVision', 'A helm forged in the UnderDark',5,0,null,null,null,'Casts NightVision on the wearer'),
+	('Leather Boots', 'A standard pair of Boots made of leather',6,null,null,null,null,'No Effects'),
+	('Boots of Speed', 'Unnaturally Quick Boots',6,0,null,null,null,'Casts Haste on the wearer'),
+	('Candle','You no take!',7,null,null,null,null,'Cannot be taken')
 
 
 
@@ -308,8 +328,11 @@ insert into Game.Item(Name,Description,Type,AC,NumDice,NumSides,Mods,Effects) va
 --1. weapons 2. Armor 3. Rings  4. Amulets  5. Helmets  6. Boots  7. Misc
 insert into Game.Inventory(CharacterID,ItemID,Quantity,ToggleE) values 
 	(1,1,1,1),
-	(1,3,1,1),
-	(2,2,10,0)
+	(1,24,1,1),
+	(2,39,10,0)
+
+
+
 
 
 insert into Game.CharStats(CharacterID,HP,AC,PB,Gold,Acrobatics,AnimalHandling,Arcana,Athletics,Deception,History,
@@ -319,17 +342,17 @@ Survival,STR_Save,DEX_Save,CON_Save,INT_Save,WIS_Save,CHA_Save,STR_Mod,DEX_Mod,C
 	(2,10,11,2,2,1,2,1,2,3,1,2,1,2,1,2,3,1,2,3,2,1,2,1,2,2,2,1,2,3,2,1,3,1,1)
 
 
-select * from Game.Info
-select * from Game.userCampaign
-select * from Game.Users
-select * from Game.Campaign
-select * from Game.Class
-select * from Game.Race
-select * from Game.Character
-select * from Game.Abilities
-select * from Game.CharAbilities
-select * from Game.Feats
-select * from Game.CharFeats
-select * from Game.Inventory
-select * from Game.Item
+--select * from Game.Info
+--select * from Game.userCampaign
+--select * from Game.Users
+--select * from Game.Campaign
+--select * from Game.Class
+--select * from Game.Race
+--select * from Game.Character
+--select * from Game.Abilities
+--select * from Game.CharAbilities
+--select * from Game.Feats
+--select * from Game.CharFeats
+--select * from Game.Inventory
+--select * from Game.Item
 

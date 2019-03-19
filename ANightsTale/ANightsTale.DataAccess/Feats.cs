@@ -13,6 +13,8 @@ namespace ANightsTale.DataAccess
         public int FeatId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int RequiredLv { get; set; }
+        public int RequiredClass { get; set; }
         public bool StatTable { get; set; }
         public int StatType { get; set; }
         public int Mods { get; set; }
