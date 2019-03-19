@@ -6,10 +6,13 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface ICampaingRepository
     {
-        void CreateCampaing();
-        void DeleteCampaing();
-        IEnumerable<Character> GetAllCampaings();
-        Character GetCampaingyId(int id);
-        Character GetCampaingByName(string name);
+        void CreateCampaing(Campaign campaign);
+        void DeleteCampaing(int id);
+
+        IEnumerable<Campaign> GetAllCampaings();
+        Campaign GetCampaingyId(int id);
+        Campaign GetCampaingByName(string name);
+
+        void Save();
     }
 }

@@ -6,14 +6,15 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface IItemRepository
     {
-        void CreateItem();
-        void DeleteItem();
-        IEnumerable<Character> GetAllItems();
-        Character GetItemById(int id);
-        Character GetItemByName(string name);
-        void SetNumberDice();
-        void SetNumberSides();
-        void SetMods();
-        void SetEffects();
+        void CreateItem(Item item);
+        void DeleteItem(int id);
+
+        IEnumerable<Item> GetAllItems();
+        Item GetItemById(int id);
+        Item GetItemByName(string name);
+
+        void UpdateItem(Item item);
+
+        void Save();
     }
 }

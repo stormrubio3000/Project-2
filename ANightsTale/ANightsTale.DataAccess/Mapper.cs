@@ -173,6 +173,29 @@ namespace ANightsTale.DataAccess
         public static IEnumerable<Library.Abilities> Map(IEnumerable<Abilities> abilities) => abilities.Select(Map);
         public static IEnumerable<Abilities> Map(IEnumerable<Library.Abilities> abilities) => abilities.Select(Map);
 
+        public static Library.Feats Map(Feats r) => new Library.Feats
+        {
+            FeatID = r.FeatId,
+            Name = r.Name,
+            Description = r.Name,
+            Mods = r.Mods,
+            StatTable = r.StatTable,
+            StatType = r.StatType
+        };
+
+        public static Feats Map(Library.Feats r) => new Feats
+        {
+            FeatId = r.FeatID,
+            Name = r.Name,
+            Description = r.Name,
+            Mods = r.Mods,
+            StatTable = r.StatTable,
+            StatType = r.StatType
+        };
+
+        public static IEnumerable<Library.Feats> Map(IEnumerable<Feats> feats) => feats.Select(Map);
+        public static IEnumerable<Feats> Map(IEnumerable<Library.Feats> feats) => feats.Select(Map);
+
         public static Library.Item Map(Item r) => new Library.Item
         {
             ItemID = r.ItemId,

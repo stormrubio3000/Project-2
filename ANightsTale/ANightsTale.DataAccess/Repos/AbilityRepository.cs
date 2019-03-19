@@ -1,96 +1,85 @@
 ﻿using ANightsTale.Library;
 using ANightsTale.Library.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ANightsTale.DataAccess.Repos
 {
     public class AbilityRepository : IAbilityRepository
     {
-        public void CreateAbility()
+        private readonly ANightsTaleContext _db;
+
+        public AbilityRepository(ANightsTaleContext db)
         {
-            throw new NotImplementedException();
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void CreateFeat()
+        public void CreateAbility(Library.Abilities ability)
         {
-            throw new NotImplementedException();
+            _db.Add(Mapper.Map(ability));
         }
 
-        public void DeleteAbility()
+        public void CreateFeat(Library.Feats feat)
         {
-            throw new NotImplementedException();
+            _db.Add(Mapper.Map(feat));
         }
 
-        public void DeleteFeat()
+        public void DeleteAbility(int id)
         {
-            throw new NotImplementedException();
+            _db.Remove(_db.Abilities.Find(id));
         }
 
-        public Abilities GetAbilityById(int id)
+        public void DeleteFeat(int id)
         {
-            throw new NotImplementedException();
+            _db.Remove(_db.Feats.Find(id));
         }
 
-        public Abilities GetAbilityByName(string name)
+        public Library.Abilities GetAbilityById(int id)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Abilities.AsNoTracking().First(r => r.AbilityId == id));
         }
 
-        public IEnumerable<Abilities> GetAllAbilities()
+        public Library.Abilities GetAbilityByName(string name)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Abilities.AsNoTracking().First(r => r.Name == name));
         }
 
-        public Feats GetFeatById(int id)
+        public IEnumerable<Library.Abilities> GetAllAbilities()
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Abilities);
         }
 
-        public Feats GetFeatByName(string name)
+        public Library.Feats GetFeatById(int id)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Feats.AsNoTracking().First(r => r.FeatId == id));
         }
 
-        public IEnumerable<Feats> GetAllFeats()
+        public Library.Feats GetFeatByName(string name)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Feats.AsNoTracking().First(r => r.Name == name));
         }
 
-        public bool IsAttack()
+        public IEnumerable<Library.Feats> GetAllFeats()
         {
-            throw new NotImplementedException();
+            return Mapper.Map(_db.Feats);
+        }
+ 
+        public void UpdateAbility(Library.Abilities ability)
+        {
+            _db.Entry(_db.Abilities.Find(ability.AbilityID)).CurrentValues.SetValues(Mapper.Map(ability));
+        }
+
+        public void UpdateFeat(Library.Feats feat)
+        {
+            _db.Entry(_db.Feats.Find(feat.FeatID)).CurrentValues.SetValues(Mapper.Map(feat));
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
-        }
-
-        public void SetNumberDice()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetNumberSides()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Library.Abilities> IAbilityRepository.GetAllAbilities()
-        {
-            throw new NotImplementedException();
-        }
-
-        Library.Abilities IAbilityRepository.GetAbilityById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Library.Abilities IAbilityRepository.GetAbilityByName(string name)
-        {
-            throw new NotImplementedException();
+            _db.SaveChanges();
         }
     }
 }
