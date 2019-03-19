@@ -15,6 +15,7 @@ namespace ANightsTale.DataAccess
 
         public int CharacterId { get; set; }
         public string Name { get; set; }
+        public string Bio { get; set; }
         public int UsersId { get; set; }
         public int CampaignId { get; set; }
         public int RaceId { get; set; }
