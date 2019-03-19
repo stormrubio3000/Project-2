@@ -20,6 +20,7 @@ namespace ANightsTale.DataAccess
         public int CampaignId { get; set; }
         public int RaceId { get; set; }
         public int ClassId { get; set; }
+        public int Hd { get; set; }
         public int? Experience { get; set; }
         public int? Level { get; set; }
         public int Str { get; set; }
