@@ -72,7 +72,8 @@ create table Game.Race(
 create table Game.Class(
 	ClassID int primary key identity,
 	Name nvarchar(50) not null,
-	Description nvarchar(max) not null
+	Description nvarchar(max) not null,
+	HD int not null
 )
 
 
@@ -85,7 +86,6 @@ create table Game.Character (
 	CampaignID int not null,
 	RaceID int not null,
 	ClassID int not null,
-	HD int not null,
 	experience int default(0),
 	Level int default(1),
 	Str int not null,
@@ -234,17 +234,17 @@ insert into Game.Info (CampaignID,type,Message) values
 	(1,'intro','So there was this one time at band camp')
 
 
-insert into Game.Class(Name,Description) values 
-	('Barbarian', 'A fierce warrior of primitive background who can enter a battle rage.'),
-	('Fighter','A master of martial combat, skilled with a variety of weapons and armor.'),
-	('Paladin','A holy warrior bound to a sacred oath.'),
-	('Bard', 'An inspiring magician whose power echoes the music of creation.'),
-	('Sorcerer', 'A spellcaster who draws on inherent magic from a gift or bloodline.'),
-	('Cleric', 'A priestly champion who wields divine magic in service of a higher power.'),
-	('Druid', 'A priest of the Old Faith, wielding the powers of nature—moonlight and plant growth, fire and lightning—and adopting animal forms.'),
-	('Ranger', 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.'),
-	('Rogue', 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.'),
-	('Wizard', 'A scholarly magic-user capable of manipulating the structures of reality')
+insert into Game.Class(Name,Description,HD) values 
+	('Barbarian', 'A fierce warrior of primitive background who can enter a battle rage.',12),
+	('Fighter','A master of martial combat, skilled with a variety of weapons and armor.',10),
+	('Paladin','A holy warrior bound to a sacred oath.',10),
+	('Bard', 'An inspiring magician whose power echoes the music of creation.',8),
+	('Sorcerer', 'A spellcaster who draws on inherent magic from a gift or bloodline.',6),
+	('Cleric', 'A priestly champion who wields divine magic in service of a higher power.',8),
+	('Druid', 'A priest of the Old Faith, wielding the powers of nature—moonlight and plant growth, fire and lightning—and adopting animal forms.',8),
+	('Ranger', 'A warrior who uses martial prowess and nature magic to combat threats on the edges of civilization.',10),
+	('Rogue', 'A scoundrel who uses stealth and trickery to overcome obstacles and enemies.',8),
+	('Wizard', 'A scholarly magic-user capable of manipulating the structures of reality',6)
 
 insert into Game.Race(Name,Description) values 
 	('Dwarf', 'Dwarves are solid and enduring like the mountains they love, weathering the passage of centuries with stoic endurance and little change.'),
@@ -258,9 +258,9 @@ insert into Game.Race(Name,Description) values
 
 
 
-insert into Game.Character(Name,HD,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
-	('sparticustard',12, 1,3,5,1,17,15,12,7,9,12,30,12),
-	('ANERD',10, 1,1,1,2,22,5,19,13,4,3,30,10)
+insert into Game.Character(Name,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
+	('sparticustard',1,3,5,1,17,15,12,7,9,12,30,12),
+	('ANERD',1,1,1,2,22,5,19,13,4,3,30,10)
 
 
 insert into Game.Abilities(Name,Description,RequiredClass,RequiredLV,NumDice,NumSides,Attack) values
@@ -330,7 +330,7 @@ insert into Game.Item(Name,Description,Type,AC,NumDice,NumSides,Mods,Effects) va
 insert into Game.Inventory(CharacterID,ItemID,Quantity,ToggleE) values 
 	(1,1,1,1),
 	(1,24,1,1),
-	(2,39,10,0)
+	(2,30,10,0)
 
 
 
