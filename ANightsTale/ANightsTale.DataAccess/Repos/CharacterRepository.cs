@@ -10,6 +10,7 @@ namespace ANightsTale.DataAccess.Repos
     {
 
         private readonly ANightsTaleContext _db;
+        private static Random rand = new Random();
 
         public CharacterRepository(ANightsTaleContext db)
         {
@@ -53,12 +54,32 @@ namespace ANightsTale.DataAccess.Repos
 
         public void InitialRolls(int id)
         {
-            throw new NotImplementedException();
-        }
+            var character = _db.Character.First(c => c.CharacterId == id);
 
-        public void RandomInitialRolls(int id)
-        {
-            throw new NotImplementedException();
+            List<int> rolls = new List<int>();
+            List<int> totals = new List<int>();
+
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    rolls.Add(rand.Next(1, 7));
+                }
+
+                rolls.OrderByDescending(o => o);
+                rolls.Remove(rolls.Last());
+
+                totals.Add(rolls[0] + rolls[1] + rolls[2]);
+
+                rolls.Clear();
+            }
+
+            character.Str = totals[0];
+            character.Dex = totals[1];
+            character.Con = totals[2];
+            character.Int = totals[3];
+            character.Wis = totals[4];
+            character.Cha = totals[5];
         }
 
         public void CalculateModifiers(int id)

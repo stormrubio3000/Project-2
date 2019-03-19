@@ -16,7 +16,6 @@ namespace ANightsTale.Library.Interfaces
         void SetRace(Race r);
         void SetClass(Class c);
 
-        void RandomInitialRolls(int id);
         void InitialRolls(int id);
         void CalculateModifiers(int id);
         void CalculateSavingThrows(int id);
