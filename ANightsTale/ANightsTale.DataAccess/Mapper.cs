@@ -11,6 +11,7 @@ namespace ANightsTale.DataAccess
         {
             Name = character.Name,
             CampaignID = character.CampaignId,
+            UserId = character.UsersId,
             RaceID = character.RaceId,
             ClassID = character.ClassId,
             Experience = (int)character.Experience,
@@ -28,6 +29,7 @@ namespace ANightsTale.DataAccess
         public static Character Map(Library.Character character) => new Character
         {
             Name = character.Name,
+            UsersId = character.UserId,
             CampaignId = character.CampaignID,
             RaceId = character.RaceID,
             ClassId = character.ClassID,

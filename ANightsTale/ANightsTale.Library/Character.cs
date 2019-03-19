@@ -7,6 +7,7 @@ namespace ANightsTale.Library
     public class Character
     {
         public int CharacterID { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public int CampaignID { get; set; }
         public int RaceID { get; set; }

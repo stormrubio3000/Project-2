@@ -52,10 +52,21 @@ namespace ANightsTale.DataAccess.Repos
             _db.Character.Last().ClassId = c.ClassID;
         }
 
-        public void InitialRolls(int id)
+        public void SetRolls(IEnumerable<int> rolls, int id)
         {
             var character = _db.Character.First(c => c.CharacterId == id);
+            var attributes = rolls.ToList();
 
+            character.Str = attributes[0];
+            character.Dex = attributes[1];
+            character.Con = attributes[2];
+            character.Int = attributes[3];
+            character.Wis = attributes[4];
+            character.Cha = attributes[5];
+        }
+
+        public IEnumerable<int> InitialRolls()
+        {
             List<int> rolls = new List<int>();
             List<int> totals = new List<int>();
 
@@ -74,12 +85,7 @@ namespace ANightsTale.DataAccess.Repos
                 rolls.Clear();
             }
 
-            character.Str = totals[0];
-            character.Dex = totals[1];
-            character.Con = totals[2];
-            character.Int = totals[3];
-            character.Wis = totals[4];
-            character.Cha = totals[5];
+            return totals;
         }
 
         public void CalculateModifiers(int id)
