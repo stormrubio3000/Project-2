@@ -85,6 +85,7 @@ create table Game.Character (
 	CampaignID int not null,
 	RaceID int not null,
 	ClassID int not null,
+	HD int not null,
 	experience int default(0),
 	Level int default(1),
 	Str int not null,
@@ -257,9 +258,9 @@ insert into Game.Race(Name,Description) values
 
 
 
-insert into Game.Character(Name,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
-	('sparticustard', 1,3,5,1,17,15,12,7,9,12,30,12),
-	('ANERD', 1,1,1,2,22,5,19,13,4,3,30,10)
+insert into Game.Character(Name,HD,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,Int,Wis,CHA,Speed,MaxHP) values
+	('sparticustard',12, 1,3,5,1,17,15,12,7,9,12,30,12),
+	('ANERD',10, 1,1,1,2,22,5,19,13,4,3,30,10)
 
 
 insert into Game.Abilities(Name,Description,RequiredClass,RequiredLV,NumDice,NumSides,Attack) values
