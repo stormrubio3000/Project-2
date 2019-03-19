@@ -236,7 +236,7 @@ namespace ANightsTale.DataAccess
 
         public static Library.Info Map(Info r) => new Library.Info
         {
-            InfoID = r.GameId,
+            InfoID = r.InfoId,
             Type = r.Type,
             Message = r.Message,
             CampaignID = r.CampaignId
@@ -244,7 +244,7 @@ namespace ANightsTale.DataAccess
 
         public static Info Map(Library.Info r) => new Info
         {
-            GameId = r.InfoID,
+            InfoId = r.InfoID,
             Type = r.Type,
             Message = r.Message,
             CampaignId = r.CampaignID

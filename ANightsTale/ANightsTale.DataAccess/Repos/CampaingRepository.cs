@@ -59,7 +59,7 @@ namespace ANightsTale.DataAccess.Repos
 
         public Library.Info GetInfoId(int id)
         {
-            return Mapper.Map(_db.Info.AsNoTracking().First(r => r.GameId == id));
+            return Mapper.Map(_db.Info.AsNoTracking().First(r => r.InfoId == id));
         }
 
         public void Save()
