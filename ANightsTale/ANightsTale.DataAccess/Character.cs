@@ -15,6 +15,7 @@ namespace ANightsTale.DataAccess
 
         public int CharacterId { get; set; }
         public string Name { get; set; }
+        public int UsersId { get; set; }
         public int CampaignId { get; set; }
         public int RaceId { get; set; }
         public int ClassId { get; set; }
@@ -32,6 +33,7 @@ namespace ANightsTale.DataAccess
         public virtual Campaign Campaign { get; set; }
         public virtual Class Class { get; set; }
         public virtual Race Race { get; set; }
+        public virtual Users Users { get; set; }
         public virtual ICollection<CharAbilities> CharAbilities { get; set; }
         public virtual ICollection<CharFeats> CharFeats { get; set; }
         public virtual ICollection<CharStats> CharStats { get; set; }
