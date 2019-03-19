@@ -13,6 +13,12 @@ namespace ANightsTale.Library.Interfaces
         Campaign GetCampaingyId(int id);
         Campaign GetCampaingByName(string name);
 
+        void CreateInfo(Info info);
+        void DeleteInfo(int id);
+
+        IEnumerable<Info> GetAllInfos();
+        Info GetInfoId(int id);
+
         void Save();
     }
 }

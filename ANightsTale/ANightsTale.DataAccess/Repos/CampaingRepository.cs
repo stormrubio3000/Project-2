@@ -22,14 +22,29 @@ namespace ANightsTale.DataAccess.Repos
             _db.Add(Mapper.Map(campaign));
         }
 
+        public void CreateInfo(Library.Info info)
+        {
+            _db.Add(Mapper.Map(info));
+        }
+
         public void DeleteCampaing(int id)
         {
             _db.Remove(_db.Campaign.Find(id));
         }
 
+        public void DeleteInfo(int id)
+        {
+            _db.Remove(_db.Info.Find(id));
+        }
+
         public IEnumerable<Library.Campaign> GetAllCampaings()
         {
             return Mapper.Map(_db.Campaign);
+        }
+
+        public IEnumerable<Library.Info> GetAllInfos()
+        {
+            return Mapper.Map(_db.Info);
         }
 
         public Library.Campaign GetCampaingByName(string name)
@@ -40,6 +55,11 @@ namespace ANightsTale.DataAccess.Repos
         public Library.Campaign GetCampaingyId(int id)
         {
             return Mapper.Map(_db.Campaign.AsNoTracking().First(r => r.CampaignId == id));
+        }
+
+        public Library.Info GetInfoId(int id)
+        {
+            return Mapper.Map(_db.Info.AsNoTracking().First(r => r.GameId == id));
         }
 
         public void Save()
