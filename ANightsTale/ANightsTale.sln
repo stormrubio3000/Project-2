@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale", "ANightsTale\ANightsTale.csproj", "{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2CBFA409-B9B5-4821-8385-533539EF56A6} = {2CBFA409-B9B5-4821-8385-533539EF56A6}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.DataAccess", "ANightsTale.DataAccess\ANightsTale.DataAccess.csproj", "{2CBFA409-B9B5-4821-8385-533539EF56A6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0817A39D-E21A-4D32-9A07-20CB9E7857AD} = {0817A39D-E21A-4D32-9A07-20CB9E7857AD}
@@ -21,10 +16,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65F9CE6E-7A7F-4A6C-B136-64A16DD665BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CBFA409-B9B5-4821-8385-533539EF56A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
