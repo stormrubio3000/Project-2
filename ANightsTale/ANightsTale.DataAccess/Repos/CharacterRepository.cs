@@ -17,14 +17,20 @@ namespace ANightsTale.DataAccess.Repos
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void CreateCharacter(Library.Character character)
+        public void AddCharacter(Library.Character character)
         {
             _db.Add(Mapper.Map(character));
         }
 
-        public void DeleteCharacter(Library.Character character)
+        public void RemoveCharacter(Library.Character character)
         {
             _db.Remove(Mapper.Map(character));
+        }
+
+        public void CreateCharacter(string name, string bio = null)
+        {
+            var character = new Library.Character();
+            character.Name = name;
         }
 
         public IEnumerable<Library.Character> GetAllCharacters()
@@ -83,9 +89,9 @@ namespace ANightsTale.DataAccess.Repos
             _db.Character.Last().ClassId = c.ClassID;
         }
 
-        public void SetRolls(IEnumerable<int> rolls, int id)
+        public void SetRolls(IEnumerable<int> rolls)
         {
-            var character = _db.Character.First(c => c.CharacterId == id);
+            var character = _db.Character.Last();
             var attributes = rolls.ToList();
 
             character.Str = attributes[0];

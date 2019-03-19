@@ -6,8 +6,10 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface ICharacterRepository
     {
-        void CreateCharacter(Character character);
-        void DeleteCharacter(Character character);
+        void AddCharacter(Character character);
+        void RemoveCharacter(Character character);
+
+        void CreateCharacter(string name, string bio = null);
 
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);
@@ -15,7 +17,7 @@ namespace ANightsTale.Library.Interfaces
 
         void SetRace(Race r);
         void SetClass(Class c);
-        void SetRolls(IEnumerable<int> rolls, int id);
+        void SetRolls(IEnumerable<int> rolls);
 
         IEnumerable<int> InitialRolls();
         void CalculateModifiers(int id);
