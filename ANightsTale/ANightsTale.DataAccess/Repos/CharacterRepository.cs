@@ -44,16 +44,38 @@ namespace ANightsTale.DataAccess.Repos
 
         public void SetRace(Library.Race r)
         {
-            /*
-             * 1. Dwarf
-             * 2. Human
-             * 3. Elf
-             * 4. Halfling
-             * 5. Gnomes
-             * 6. Half-Orc
-             */
+            var character = _db.Character.Last();
+            character.RaceId = r.RaceID;
 
-            _db.Character.Last().RaceId = r.RaceID;
+            switch(r.RaceID)
+            {
+                case 1:
+                    //Dwarf
+                    character.Speed = 20;
+                    break;
+                case 2:
+                    //Human
+                    character.Speed = 30;
+                    break;
+                case 3:
+                    //Elf
+                    character.Speed = 30;
+                    break;
+                case 4:
+                    //Halfling
+                    character.Speed = 20;
+                    break;
+                case 5:
+                    //Gnomes
+                    character.Speed = 20;
+                    break;
+                case 6:
+                    //Half-Orc
+                    character.Speed = 30;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void SetClass(Library.Class c)
