@@ -8,6 +8,8 @@ namespace ANightsTale.Library.Interfaces
     {
         void AddCharacter(Character character);
         void RemoveCharacter(Character character);
+        void AddCharStats(CharStats stats);
+        void RemoveCharStats(CharStats stats);
 
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);

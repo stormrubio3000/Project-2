@@ -10,7 +10,6 @@ namespace ANightsTale.DataAccess.Repos
     {
 
         private readonly ANightsTaleContext _db;
-        // Create Wrapper class for Random
         private readonly RngProvider _rand;
 
         public CharacterRepository(ANightsTaleContext db, RngProvider rand)
@@ -27,6 +26,16 @@ namespace ANightsTale.DataAccess.Repos
         public void RemoveCharacter(Library.Character character)
         {
             _db.Remove(Mapper.Map(character));
+        }
+
+        public void AddCharStats(Library.CharStats stats)
+        {
+            _db.Add(Mapper.Map(stats));
+        }
+
+        public void RemoveCharStats(Library.CharStats stats)
+        {
+            _db.Remove(Mapper.Map(stats));
         }
 
         public IEnumerable<Library.Character> GetAllCharacters()
