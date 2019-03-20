@@ -27,22 +27,6 @@ namespace ANightsTale.DataAccess.Repos
             _db.Remove(Mapper.Map(character));
         }
 
-        //public void CreateCharacter(string name, IEnumerable<int> rolls,
-        //                            int raceId, int classId, string bio = null)
-        //{
-        //    var character = new Library.Character();
-
-        //    character.Name = name;
-        //    character.Bio = bio;
-        //    character.Experience = 0;
-        //    character.Level = 1;
-
-        //    AddCharacter(character);
-        //    SetRolls(rolls);
-        //    SetRace(raceId);
-        //    SetClass(classId);
-        //}
-
         public IEnumerable<Library.Character> GetAllCharacters()
         {        
             return Mapper.Map(_db.Character);
@@ -63,40 +47,14 @@ namespace ANightsTale.DataAccess.Repos
             var character = _db.Character.Last();
             character.RaceId = raceId;
 
-            switch(raceId)
-            {
-                case 1:
-                    //Dwarf
-                    character.Speed = 20;
-                    break;
-                case 2:
-                    //Human
-                    character.Speed = 30;
-                    break;
-                case 3:
-                    //Elf
-                    character.Speed = 30;
-                    break;
-                case 4:
-                    //Halfling
-                    character.Speed = 20;
-                    break;
-                case 5:
-                    //Gnomes
-                    character.Speed = 20;
-                    break;
-                case 6:
-                    //Half-Orc
-                    character.Speed = 30;
-                    break;
-                default:
-                    break;
-            }
+            if (raceId == 1 || raceId == 4 || raceId == 5) character.Speed = 20;
+            else character.Speed = 30;
         }
 
         public void SetClass(int classId)
         {
             _db.Character.Last().ClassId = classId;
+            _db.Character.Last().MaxHp = _db.Class.First(c => c.ClassId == classId).Hd;
         }
 
         public void SetRolls(IEnumerable<int> rolls)
@@ -112,24 +70,17 @@ namespace ANightsTale.DataAccess.Repos
             character.Cha = attributes[5];
         }
 
-        public void SetInitialHp()
+        public void SetModifiers()
         {
             var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
 
-            // Barbarian
-            if (character.ClassId == 1) character.MaxHp = 12;
-            // Fighter, Paladin, Ranger
-            else if (character.ClassId == 2 || 
-                     character.ClassId == 3 ||
-                     character.ClassId == 8) character.MaxHp = 10;
-            // Bard, Cleric, Druid, Rogue
-            else if (character.ClassId == 4 ||
-                     character.ClassId == 6 ||
-                     character.ClassId == 7 ||
-                     character.ClassId == 9) character.MaxHp = 8;
-            // Sorcerer, Wizard
-            else if (character.ClassId == 5 ||
-                     character.ClassId == 10) character.MaxHp = 6;
+            stats.StrMod = CalculateModifier(character.Str);
+            stats.DexMod = CalculateModifier(character.Dex);
+            stats.ConMod = CalculateModifier(character.Con);
+            stats.IntMod = CalculateModifier(character.Int);
+            stats.WisMod = CalculateModifier(character.Wis);
+            stats.ChaMod = CalculateModifier(character.Cha);
         }
 
         public IEnumerable<int> InitialRolls()
@@ -155,9 +106,21 @@ namespace ANightsTale.DataAccess.Repos
             return totals;
         }
 
-        public void CalculateModifiers(int id)
+        public int CalculateModifier(int val)
         {
-            throw new NotImplementedException();
+            if (val == 1) return -5;
+            else if (val == 2 || val == 3) return -4;
+            else if (val == 4 || val == 5) return -3;
+            else if (val == 6 || val == 7) return -2;
+            else if (val == 8 || val == 9) return -1;
+            else if (val == 10 || val == 11) return 0;
+            else if (val == 12 || val == 13) return 1;
+            else if (val == 14 || val == 15) return 2;
+            else if (val == 16 || val == 17) return 3;
+            else if (val == 18 || val == 19) return 4;
+            else if (val == 20 || val == 21) return 5;
+
+            return 0;
         }
 
         public void CalculateSavingThrows(int id)
