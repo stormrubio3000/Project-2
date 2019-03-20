@@ -10,11 +10,12 @@ namespace ANightsTale.DataAccess.Repos
     {
 
         private readonly ANightsTaleContext _db;
-        private static Random rand = new Random();
+        private readonly RngProvider _rand;
 
-        public CharacterRepository(ANightsTaleContext db)
+        public CharacterRepository(ANightsTaleContext db, RngProvider rand)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
+            _rand = rand ?? throw new ArgumentNullException(nameof(rand));
         }
 
         public void AddCharacter(Library.Character character)
@@ -27,21 +28,15 @@ namespace ANightsTale.DataAccess.Repos
             _db.Remove(Mapper.Map(character));
         }
 
-        //public void CreateCharacter(string name, IEnumerable<int> rolls,
-        //                            int raceId, int classId, string bio = null)
-        //{
-        //    var character = new Library.Character();
+        public void AddCharStats(Library.CharStats stats)
+        {
+            _db.Add(Mapper.Map(stats));
+        }
 
-        //    character.Name = name;
-        //    character.Bio = bio;
-        //    character.Experience = 0;
-        //    character.Level = 1;
-
-        //    AddCharacter(character);
-        //    SetRolls(rolls);
-        //    SetRace(raceId);
-        //    SetClass(classId);
-        //}
+        public void RemoveCharStats(Library.CharStats stats)
+        {
+            _db.Remove(Mapper.Map(stats));
+        }
 
         public IEnumerable<Library.Character> GetAllCharacters()
         {        
@@ -58,45 +53,81 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
         }
 
+        public IEnumerable<bool> GetSavingThrowProficiency(int classId)
+        {
+            // STR, DEX, CON, INT, WIS, CHA
+            List<bool> proficiency = new List<bool> { false, false, false, false, false, false };
+
+            switch(classId)
+            {
+                case 1:
+                    // Barbarian
+                    proficiency[0] = true;
+                    proficiency[2] = true;
+                    break;
+                case 2:
+                    // Fighter
+                    proficiency[0] = true;
+                    proficiency[2] = true;
+                    break;
+                case 3:
+                    // Paladin
+                    proficiency[4] = true;
+                    proficiency[5] = true;
+                    break;
+                case 4:
+                    // Bard
+                    proficiency[1] = true;
+                    proficiency[5] = true;
+                    break;
+                case 5:
+                    // Sorcerer
+                    proficiency[2] = true;
+                    proficiency[5] = true;
+                    break;
+                case 6:
+                    // Cleric
+                    proficiency[4] = true;
+                    proficiency[5] = true;
+                    break;
+                case 7:
+                    // Druid
+                    proficiency[3] = true;
+                    proficiency[4] = true;
+                    break;
+                case 8:
+                    // Ranger
+                    proficiency[0] = true;
+                    proficiency[1] = true;
+                    break;
+                case 9:
+                    // Rogue
+                    proficiency[1] = true;
+                    proficiency[3] = true;
+                    break;
+                case 10:
+                    // Wizard
+                    proficiency[3] = true;
+                    proficiency[4] = true;
+                    break;
+            }
+
+            return proficiency;
+        }
+
         public void SetRace(int raceId)
         {
             var character = _db.Character.Last();
             character.RaceId = raceId;
 
-            switch(raceId)
-            {
-                case 1:
-                    //Dwarf
-                    character.Speed = 20;
-                    break;
-                case 2:
-                    //Human
-                    character.Speed = 30;
-                    break;
-                case 3:
-                    //Elf
-                    character.Speed = 30;
-                    break;
-                case 4:
-                    //Halfling
-                    character.Speed = 20;
-                    break;
-                case 5:
-                    //Gnomes
-                    character.Speed = 20;
-                    break;
-                case 6:
-                    //Half-Orc
-                    character.Speed = 30;
-                    break;
-                default:
-                    break;
-            }
+            if (raceId == 1 || raceId == 4 || raceId == 5) character.Speed = 20;
+            else character.Speed = 30;
         }
 
         public void SetClass(int classId)
         {
             _db.Character.Last().ClassId = classId;
+            _db.Character.Last().MaxHp = _db.Class.First(c => c.ClassId == classId).Hd;
         }
 
         public void SetRolls(IEnumerable<int> rolls)
@@ -112,24 +143,34 @@ namespace ANightsTale.DataAccess.Repos
             character.Cha = attributes[5];
         }
 
-        public void SetInitialHp()
+        public void SetModifiers()
         {
             var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
 
-            // Barbarian
-            if (character.ClassId == 1) character.MaxHp = 12;
-            // Fighter, Paladin, Ranger
-            else if (character.ClassId == 2 || 
-                     character.ClassId == 3 ||
-                     character.ClassId == 8) character.MaxHp = 10;
-            // Bard, Cleric, Druid, Rogue
-            else if (character.ClassId == 4 ||
-                     character.ClassId == 6 ||
-                     character.ClassId == 7 ||
-                     character.ClassId == 9) character.MaxHp = 8;
-            // Sorcerer, Wizard
-            else if (character.ClassId == 5 ||
-                     character.ClassId == 10) character.MaxHp = 6;
+            stats.StrMod = CalculateModifier(character.Str);
+            stats.DexMod = CalculateModifier(character.Dex);
+            stats.ConMod = CalculateModifier(character.Con);
+            stats.IntMod = CalculateModifier(character.Int);
+            stats.WisMod = CalculateModifier(character.Wis);
+            stats.ChaMod = CalculateModifier(character.Cha);
+
+            character.MaxHp += stats.ConMod;
+        }
+
+        public void SetSavingThrows()
+        {
+            var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+            var proficiency = GetSavingThrowProficiency(character.ClassId).ToList();
+            int pb = stats.Pb;
+
+            stats.StrSave = CalculateSavingThrow(stats.StrMod, pb, proficiency[0]);
+            stats.DexSave = CalculateSavingThrow(stats.DexMod, pb, proficiency[1]);
+            stats.ConSave = CalculateSavingThrow(stats.ConMod, pb, proficiency[2]);
+            stats.IntSave = CalculateSavingThrow(stats.IntMod, pb, proficiency[3]);
+            stats.WisSave = CalculateSavingThrow(stats.WisMod, pb, proficiency[4]);
+            stats.ChaSave = CalculateSavingThrow(stats.ChaMod, pb, proficiency[5]);
         }
 
         public IEnumerable<int> InitialRolls()
@@ -141,7 +182,7 @@ namespace ANightsTale.DataAccess.Repos
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    rolls.Add(rand.Next(1, 7));
+                    rolls.Add(_rand.Rng.Next(1, 7));
                 }
 
                 rolls.OrderByDescending(o => o);
@@ -155,19 +196,149 @@ namespace ANightsTale.DataAccess.Repos
             return totals;
         }
 
-        public void CalculateModifiers(int id)
+        public int CalculateModifier(int val)
         {
-            throw new NotImplementedException();
+            if (val == 1) return -5;
+            else if (val == 2 || val == 3) return -4;
+            else if (val == 4 || val == 5) return -3;
+            else if (val == 6 || val == 7) return -2;
+            else if (val == 8 || val == 9) return -1;
+            else if (val == 10 || val == 11) return 0;
+            else if (val == 12 || val == 13) return 1;
+            else if (val == 14 || val == 15) return 2;
+            else if (val == 16 || val == 17) return 3;
+            else if (val == 18 || val == 19) return 4;
+            else return 5;
         }
 
-        public void CalculateSavingThrows(int id)
+        public int CalculateSavingThrow(int val, int pb, bool proficient)
         {
-            throw new NotImplementedException();
+            if (proficient)
+            {
+                return val + pb;
+            }
+            return val;
         }
 
-        public void CalculateSkills(int id)
+        public void SetSkills()
         {
-            throw new NotImplementedException();
+            var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+
+            //STR
+            stats.Athletics = stats.StrMod;
+
+            //DEX
+            stats.Acrobatics = stats.DexMod;
+            stats.SleightOfHand = stats.DexMod;
+            stats.Stealth = stats.DexMod;
+
+            //INT
+            stats.Arcana = stats.IntMod;
+            stats.History = stats.IntMod;
+            stats.Investigation = stats.IntMod;
+            stats.Nature = stats.IntMod;
+            stats.Religion = stats.IntMod;
+
+            //WIS
+            stats.AnimalHandling = stats.WisMod;
+            stats.Insight = stats.WisMod;
+            stats.Medicine = stats.WisMod;
+            stats.Perception = stats.WisMod;
+            stats.Survival = stats.WisMod;
+
+            //CHA
+            stats.Deception = stats.ChaMod;
+            stats.Intimidation = stats.ChaMod;
+            stats.Persuasion = stats.ChaMod;
+            stats.Performance = stats.ChaMod;
+        }
+
+        public void UpdateSkills(List<int> skills, int charId)
+        {
+            var stats = _db.CharStats.First(s => s.CharacterId == charId);
+
+            foreach (int skill in skills)
+            {
+                switch (skill)
+                {
+                    case 1:
+                        // Acrobatics
+                        stats.Acrobatics += stats.Pb;
+                        break;
+                    case 2:
+                        // AnimalHandling
+                        stats.AnimalHandling += stats.Pb;
+                        break;
+                    case 3:
+                        // Arcana
+                        stats.Arcana += stats.Pb;
+                        break;
+                    case 4:
+                        // Athletics
+                        stats.Athletics += stats.Pb;
+                        break;
+                    case 5:
+                        // Deception
+                        stats.Deception += stats.Pb;
+                        break;
+                    case 6:
+                        // History
+                        stats.History += stats.Pb;
+                        break;
+                    case 7:
+                        // Insight
+                        stats.Insight += stats.Pb;
+                        break;
+                    case 8:
+                        // Intimidation
+                        stats.Intimidation += stats.Pb;
+                        break;
+                    case 9:
+                        // Investigation
+                        stats.Investigation += stats.Pb;
+                        break;
+                    case 10:
+                        // Medicine
+                        stats.Medicine += stats.Pb;
+                        break;
+                    case 11:
+                        // Nature
+                        stats.Nature += stats.Pb;
+                        break;
+                    case 12:
+                        // Perception
+                        stats.Perception += stats.Pb;
+                        break;
+                    case 13:
+                        // Performance
+                        stats.Performance += stats.Pb;
+                        break;
+                    case 14:
+                        // Persuasion
+                        stats.Persuasion += stats.Pb;
+                        break;
+                    case 15:
+                        // Religion
+                        stats.Religion += stats.Pb;
+                        break;
+                    case 16:
+                        // Sleight Of Hand
+                        stats.SleightOfHand += stats.Pb;
+                        break;
+                    case 17:
+                        // Stealth
+                        stats.Stealth += stats.Pb;
+                        break;
+                    case 18:
+                        // Survival
+                        stats.Survival += stats.Pb;
+                        break;
+                    default:
+                        throw new ArgumentException("This skill does not exist.");
+                }
+            }
+
         }
 
         public void Save()
