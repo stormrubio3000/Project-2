@@ -264,7 +264,13 @@ insert into Game.Character(Name,CampaignID,RaceID,ClassID,UsersID,Str,Dex,Con,In
 
 
 insert into Game.Abilities(Name,Description,RequiredClass,RequiredLV,NumDice,NumSides,Attack) values
-	('Bash', 'The Warrior strikes down on the head of their foe with a reckless fury',1,1,null,null,1),
+	('Attack', 'The character attacks with their weapon',11,1,null,null,1),
+	('Rage', 'The Barbarian flies into a rage',1,1,null,null,0),
+	('Reckless Attack','The Barbarians attacks with a reckless fury',1,2,1,20,1),
+	('Second Wind', 'The Fighter draws on inner stamina',2,1,1,10,0),
+	('Action Surge', 'The Fighter takes an additonal action',2,2,null,null,0),
+	('Lay on Hands', 'The Paladin draws on holy energy to heal an ally',3,1,null,5,0),
+	 
 	('FireBolt', 'The Mage unleashes a bolt of fire to scorch their foes.',1,2,1,10,1),
 	('Teleport', 'The Mage teleports away in a poof of smoke.',3,2,null,null,0)
 

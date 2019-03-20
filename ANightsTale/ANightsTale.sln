@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.DataAccess", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANightsTale.Library", "ANightsTale.Library\ANightsTale.Library.csproj", "{0817A39D-E21A-4D32-9A07-20CB9E7857AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTaleUI", "ANightsTaleUI\ANightsTaleUI.csproj", "{0949A72C-3BC5-410B-B4BD-2D9BB2FE3791}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANightsTaleAPI", "ANightsTaleUI\ANightsTaleAPI.csproj", "{0949A72C-3BC5-410B-B4BD-2D9BB2FE3791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
