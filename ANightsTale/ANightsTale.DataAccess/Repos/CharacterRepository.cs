@@ -10,11 +10,13 @@ namespace ANightsTale.DataAccess.Repos
     {
 
         private readonly ANightsTaleContext _db;
-        private static Random rand = new Random();
+        // Create Wrapper class for Random
+        private readonly RngProvider _rand;
 
-        public CharacterRepository(ANightsTaleContext db)
+        public CharacterRepository(ANightsTaleContext db, RngProvider rand)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
+            _rand = rand ?? throw new ArgumentNullException(nameof(rand));
         }
 
         public void AddCharacter(Library.Character character)
@@ -171,7 +173,7 @@ namespace ANightsTale.DataAccess.Repos
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    rolls.Add(rand.Next(1, 7));
+                    rolls.Add(_rand.Rng.Next(1, 7));
                 }
 
                 rolls.OrderByDescending(o => o);
@@ -209,9 +211,43 @@ namespace ANightsTale.DataAccess.Repos
             return val;
         }
 
-        public void CalculateSkills(IEnumerable<string> skills)
+        public void SetSkills()
         {
-            throw new NotImplementedException();
+            var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+
+            //STR
+            stats.Athletics = stats.StrMod;
+
+            //DEX
+            stats.Acrobatics = stats.DexMod;
+            stats.SleightOfHand = stats.DexMod;
+            stats.Stealth = stats.DexMod;
+
+            //INT
+            stats.Arcana = stats.IntMod;
+            stats.History = stats.IntMod;
+            stats.Investigation = stats.IntMod;
+            stats.Nature = stats.IntMod;
+            stats.Religion = stats.IntMod;
+
+            //WIS
+            stats.AnimalHandling = stats.WisMod;
+            stats.Insight = stats.WisMod;
+            stats.Medicine = stats.WisMod;
+            stats.Perception = stats.WisMod;
+            stats.Survival = stats.WisMod;
+
+            //CHA
+            stats.Deception = stats.ChaMod;
+            stats.Intimidation = stats.ChaMod;
+            stats.Persuasion = stats.ChaMod;
+            stats.Performance = stats.ChaMod;
+        }
+
+        public void UpdateSkills(List<int> skills)
+        {
+
         }
 
         public void Save()

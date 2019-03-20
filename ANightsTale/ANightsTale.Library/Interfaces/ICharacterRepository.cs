@@ -23,7 +23,8 @@ namespace ANightsTale.Library.Interfaces
         IEnumerable<int> InitialRolls();
         int CalculateModifier(int val);
         int CalculateSavingThrow(int val, int pb, bool proficient);
-        void CalculateSkills(IEnumerable<string> skills);
+        void SetSkills();
+        void UpdateSkills(List<int> skills);
 
         void Save();
     }
