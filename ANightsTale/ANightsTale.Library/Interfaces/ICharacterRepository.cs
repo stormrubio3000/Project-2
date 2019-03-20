@@ -12,16 +12,18 @@ namespace ANightsTale.Library.Interfaces
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
+        IEnumerable<bool> GetSavingThrowProficiency(int classId);
 
         void SetRace(int raceId);
         void SetClass(int classId);
         void SetRolls(IEnumerable<int> rolls);
         void SetModifiers();
+        void SetSavingThrows();
 
         IEnumerable<int> InitialRolls();
         int CalculateModifier(int val);
-        void CalculateSavingThrows(int id);
-        void CalculateSkills(int id);
+        int CalculateSavingThrow(int val, int pb, bool proficient);
+        void CalculateSkills(IEnumerable<string> skills);
 
         void Save();
     }

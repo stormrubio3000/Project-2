@@ -42,6 +42,68 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
         }
 
+        public IEnumerable<bool> GetSavingThrowProficiency(int classId)
+        {
+            // STR, DEX, CON, INT, WIS, CHA
+            List<bool> proficiency = new List<bool> { false, false, false, false, false, false };
+
+            switch(classId)
+            {
+                case 1:
+                    // Barbarian
+                    proficiency[0] = true;
+                    proficiency[2] = true;
+                    break;
+                case 2:
+                    // Fighter
+                    proficiency[0] = true;
+                    proficiency[2] = true;
+                    break;
+                case 3:
+                    // Paladin
+                    proficiency[4] = true;
+                    proficiency[5] = true;
+                    break;
+                case 4:
+                    // Bard
+                    proficiency[1] = true;
+                    proficiency[5] = true;
+                    break;
+                case 5:
+                    // Sorcerer
+                    proficiency[2] = true;
+                    proficiency[5] = true;
+                    break;
+                case 6:
+                    // Cleric
+                    proficiency[4] = true;
+                    proficiency[5] = true;
+                    break;
+                case 7:
+                    // Druid
+                    proficiency[3] = true;
+                    proficiency[4] = true;
+                    break;
+                case 8:
+                    // Ranger
+                    proficiency[0] = true;
+                    proficiency[1] = true;
+                    break;
+                case 9:
+                    // Rogue
+                    proficiency[1] = true;
+                    proficiency[3] = true;
+                    break;
+                case 10:
+                    // Wizard
+                    proficiency[3] = true;
+                    proficiency[4] = true;
+                    break;
+            }
+
+            return proficiency;
+        }
+
         public void SetRace(int raceId)
         {
             var character = _db.Character.Last();
@@ -81,6 +143,23 @@ namespace ANightsTale.DataAccess.Repos
             stats.IntMod = CalculateModifier(character.Int);
             stats.WisMod = CalculateModifier(character.Wis);
             stats.ChaMod = CalculateModifier(character.Cha);
+
+            character.MaxHp += stats.ConMod;
+        }
+
+        public void SetSavingThrows()
+        {
+            var character = _db.Character.Last();
+            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+            var proficiency = GetSavingThrowProficiency(character.ClassId).ToList();
+            int pb = stats.Pb;
+
+            stats.StrSave = CalculateSavingThrow(stats.StrMod, pb, proficiency[0]);
+            stats.DexSave = CalculateSavingThrow(stats.DexMod, pb, proficiency[1]);
+            stats.ConSave = CalculateSavingThrow(stats.ConMod, pb, proficiency[2]);
+            stats.IntSave = CalculateSavingThrow(stats.IntMod, pb, proficiency[3]);
+            stats.WisSave = CalculateSavingThrow(stats.WisMod, pb, proficiency[4]);
+            stats.ChaSave = CalculateSavingThrow(stats.ChaMod, pb, proficiency[5]);
         }
 
         public IEnumerable<int> InitialRolls()
@@ -118,17 +197,19 @@ namespace ANightsTale.DataAccess.Repos
             else if (val == 14 || val == 15) return 2;
             else if (val == 16 || val == 17) return 3;
             else if (val == 18 || val == 19) return 4;
-            else if (val == 20 || val == 21) return 5;
-
-            return 0;
+            else return 5;
         }
 
-        public void CalculateSavingThrows(int id)
+        public int CalculateSavingThrow(int val, int pb, bool proficient)
         {
-            throw new NotImplementedException();
+            if (proficient)
+            {
+                return val + pb;
+            }
+            return val;
         }
 
-        public void CalculateSkills(int id)
+        public void CalculateSkills(IEnumerable<string> skills)
         {
             throw new NotImplementedException();
         }
