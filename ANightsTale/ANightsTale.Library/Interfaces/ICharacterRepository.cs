@@ -24,7 +24,7 @@ namespace ANightsTale.Library.Interfaces
         int CalculateModifier(int val);
         int CalculateSavingThrow(int val, int pb, bool proficient);
         void SetSkills();
-        void UpdateSkills(List<int> skills);
+        void UpdateSkills(List<int> skills, int charId);
 
         void Save();
     }

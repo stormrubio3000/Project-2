@@ -245,8 +245,90 @@ namespace ANightsTale.DataAccess.Repos
             stats.Performance = stats.ChaMod;
         }
 
-        public void UpdateSkills(List<int> skills)
+        public void UpdateSkills(List<int> skills, int charId)
         {
+            var stats = _db.CharStats.First(s => s.CharacterId == charId);
+
+            foreach (int skill in skills)
+            {
+                switch (skill)
+                {
+                    case 1:
+                        // Acrobatics
+                        stats.Acrobatics += stats.Pb;
+                        break;
+                    case 2:
+                        // AnimalHandling
+                        stats.AnimalHandling += stats.Pb;
+                        break;
+                    case 3:
+                        // Arcana
+                        stats.Arcana += stats.Pb;
+                        break;
+                    case 4:
+                        // Athletics
+                        stats.Athletics += stats.Pb;
+                        break;
+                    case 5:
+                        // Deception
+                        stats.Deception += stats.Pb;
+                        break;
+                    case 6:
+                        // History
+                        stats.History += stats.Pb;
+                        break;
+                    case 7:
+                        // Insight
+                        stats.Insight += stats.Pb;
+                        break;
+                    case 8:
+                        // Intimidation
+                        stats.Intimidation += stats.Pb;
+                        break;
+                    case 9:
+                        // Investigation
+                        stats.Investigation += stats.Pb;
+                        break;
+                    case 10:
+                        // Medicine
+                        stats.Medicine += stats.Pb;
+                        break;
+                    case 11:
+                        // Nature
+                        stats.Nature += stats.Pb;
+                        break;
+                    case 12:
+                        // Perception
+                        stats.Perception += stats.Pb;
+                        break;
+                    case 13:
+                        // Performance
+                        stats.Performance += stats.Pb;
+                        break;
+                    case 14:
+                        // Persuasion
+                        stats.Persuasion += stats.Pb;
+                        break;
+                    case 15:
+                        // Religion
+                        stats.Religion += stats.Pb;
+                        break;
+                    case 16:
+                        // Sleight Of Hand
+                        stats.SleightOfHand += stats.Pb;
+                        break;
+                    case 17:
+                        // Stealth
+                        stats.Stealth += stats.Pb;
+                        break;
+                    case 18:
+                        // Survival
+                        stats.Survival += stats.Pb;
+                        break;
+                    default:
+                        throw new ArgumentException("This skill does not exist.");
+                }
+            }
 
         }
 
