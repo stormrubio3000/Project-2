@@ -115,7 +115,8 @@ namespace ANightsTale.DataAccess.Repos
         public void SetInitialHp()
         {
             var character = _db.Character.Last();
-
+			//var classhd = _db.GetClass(ID).HD;
+			//character.MaxHp = classhd + ConMod;
             // Barbarian
             if (character.ClassId == 1) character.MaxHp = 12;
             // Fighter, Paladin, Ranger
