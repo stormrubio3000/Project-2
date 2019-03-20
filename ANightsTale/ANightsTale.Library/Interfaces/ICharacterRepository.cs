@@ -9,9 +9,6 @@ namespace ANightsTale.Library.Interfaces
         void AddCharacter(Character character);
         void RemoveCharacter(Character character);
 
-        //void CreateCharacter(string name, IEnumerable<int> rolls,
-        //                     int raceId, int classId, string bio = null);
-
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
@@ -19,10 +16,10 @@ namespace ANightsTale.Library.Interfaces
         void SetRace(int raceId);
         void SetClass(int classId);
         void SetRolls(IEnumerable<int> rolls);
-        void SetInitialHp();
+        void SetModifiers();
 
         IEnumerable<int> InitialRolls();
-        void CalculateModifiers(int id);
+        int CalculateModifier(int val);
         void CalculateSavingThrows(int id);
         void CalculateSkills(int id);
 
