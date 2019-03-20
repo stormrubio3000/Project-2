@@ -11,7 +11,9 @@ namespace ANightsTale.DataAccess
         public static Library.Character Map(Character character) => new Library.Character
         {
             Name = character.Name,
+            Bio = character.Bio,
             CampaignID = character.CampaignId,
+            UserId = character.UsersId,
             RaceID = character.RaceId,
             ClassID = character.ClassId,
             Experience = (int)character.Experience,
@@ -29,6 +31,8 @@ namespace ANightsTale.DataAccess
         public static Character Map(Library.Character character) => new Character
         {
             Name = character.Name,
+            Bio = character.Bio,
+            UsersId = character.UserId,
             CampaignId = character.CampaignID,
             RaceId = character.RaceID,
             ClassId = character.ClassID,
@@ -254,5 +258,8 @@ namespace ANightsTale.DataAccess
         public static IEnumerable<Info> Map(IEnumerable<Library.Info> info) => info.Select(Map);
 
 
+
+        public static IEnumerable<Library.Character> Map(IEnumerable<Character> characters) => characters.Select(Map);
+        public static IEnumerable<Character> Map(IEnumerable<Library.Character> characters) => characters.Select(Map);
     }
 }
