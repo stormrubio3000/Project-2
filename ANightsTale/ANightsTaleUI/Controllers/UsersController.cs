@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ANightsTale.Library.Interfaces;
 using ANightsTale.Library;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,13 @@ namespace ANightsTaleAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        public IUserRepository Repo { get; }
+
+        public UsersController(IUserRepository repo)
+        {
+            Repo = repo;
+        }
+
         // GET: api/Users
         [HttpGet]
         public IEnumerable<string> Get()
@@ -32,7 +40,8 @@ namespace ANightsTaleAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public void Post([FromBody, Bind("Name")] Users user)
         {
-			
+            Repo.CreateUser(user);
+            Repo.Save();
         }
 
         // PUT: api/Users/5
