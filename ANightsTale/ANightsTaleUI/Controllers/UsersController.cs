@@ -23,16 +23,16 @@ namespace ANightsTaleAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Users> Get()
         {
-            return new string[] { "value1", "value2" };
+			return Repo.GetAllUsers();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Users Get(int id)
         {
-            return "value";
+            return Repo.GetUserById(id);
         }
 
         // POST: api/Users
@@ -43,18 +43,6 @@ namespace ANightsTaleAPI.Controllers
         {
             Repo.CreateUser(user);
             Repo.Save();
-        }
-
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
