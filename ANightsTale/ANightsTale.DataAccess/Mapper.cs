@@ -261,5 +261,63 @@ namespace ANightsTale.DataAccess
 
         public static IEnumerable<Library.Character> Map(IEnumerable<Character> characters) => characters.Select(Map);
         public static IEnumerable<Character> Map(IEnumerable<Library.Character> characters) => characters.Select(Map);
+
+        public static Library.Users Map(Users r) => new Library.Users
+        {
+            UserID = r.UsersId,
+            Username = r.Username,
+            Password = r.Password,
+            Permission = r.Permission,
+            Email = r.Email
+        };
+
+        public static Users Map(Library.Users r) => new Users
+        {
+            UsersId = r.UserID,
+            Username = r.Username,
+            Password = r.Password,
+            Permission = r.Permission,
+            Email = r.Email
+        };
+
+        public static IEnumerable<Library.Users> Map(IEnumerable<Users> user) => user.Select(Map);
+        public static IEnumerable<Users> Map(IEnumerable<Library.Users> user) => user.Select(Map);
+
+        public static Library.UserCampaign Map(UserCampaign r) => new Library.UserCampaign
+        {
+            UserID = r.UserId,
+            CampaignID = r.CampaignId,
+            DateCreated = r.DateCreated
+        };
+
+        public static UserCampaign Map(Library.UserCampaign r) => new UserCampaign
+        {
+            UserId = r.UserID,
+            CampaignId = r.CampaignID,
+            DateCreated = r.DateCreated
+        };
+
+        public static IEnumerable<Library.UserCampaign> Map(IEnumerable<UserCampaign> userCampaign) => userCampaign.Select(Map);
+        public static IEnumerable<UserCampaign> Map(IEnumerable<Library.UserCampaign> userCampaign) => userCampaign.Select(Map);
+
+        public static Library.Inventory Map(Inventory r) => new Library.Inventory
+        {
+            ItemID = r.ItemId,
+            CharacterID = r.CharacterId,
+            Quantity = r.Quantity,
+            ToggleE = r.ToggleE
+        };
+
+        public static Inventory Map(Library.Inventory r) => new Inventory
+        {
+            ItemId = r.ItemID,
+            CharacterId = r.CharacterID,
+            Quantity = r.Quantity,
+            ToggleE = r.ToggleE
+        };
+
+        public static IEnumerable<Library.Inventory> Map(IEnumerable<Inventory> iventory) => iventory.Select(Map);
+        public static IEnumerable<Inventory> Map(IEnumerable<Library.Inventory> iventory) => iventory.Select(Map);
+
     }
 }
