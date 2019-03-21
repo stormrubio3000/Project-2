@@ -32,6 +32,7 @@ namespace ANightsTaleUI
 			services.AddScoped<CampaignRepository>();
 			services.AddScoped<CharacterRepository>();
 			services.AddScoped<ItemRepository>();
+			services.AddScoped<UserRepository>();
 			services.AddDbContext<ANightsTaleContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("ProjectDB")));
 
 
