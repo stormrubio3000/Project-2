@@ -15,6 +15,13 @@ namespace ANightsTale.Library.Interfaces
 
         void UpdateItem(Item item);
 
+        void CreateIventory(Inventory inventory);
+        void DeleteInventory(int id);
+
+        IEnumerable<Inventory> GetAllInvetories();
+
+        void UpdateInventory(Inventory inventory);
+
         void Save();
     }
 }

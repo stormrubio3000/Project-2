@@ -22,9 +22,24 @@ namespace ANightsTale.DataAccess.Repos
             _db.Add(Mapper.Map(item));
         }
 
+        public void CreateIventory(Library.Inventory inventory)
+        {
+            _db.Add(Mapper.Map(inventory));
+        }
+
+        public void DeleteInventory(int id)
+        {
+            _db.Remove(_db.Inventory.Find(id));
+        }
+
         public void DeleteItem(int id)
         {
             _db.Remove(_db.Item.Find(id));
+        }
+
+        public IEnumerable<Library.Inventory> GetAllInvetories()
+        {
+            return Mapper.Map(_db.Inventory);
         }
 
         public IEnumerable<Library.Item> GetAllItems()
@@ -45,6 +60,11 @@ namespace ANightsTale.DataAccess.Repos
         public void Save()
         {
             _db.SaveChanges();
+        }
+
+        public void UpdateInventory(Library.Inventory inventory)
+        {
+            _db.Entry(_db.Inventory.Find(inventory.ItemID, inventory.CharacterID)).CurrentValues.SetValues(Mapper.Map(inventory));
         }
 
         public void UpdateItem(Library.Item item)

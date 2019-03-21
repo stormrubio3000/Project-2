@@ -4,14 +4,14 @@ using System.Text;
 
 namespace ANightsTale.Library.Interfaces
 {
-    public interface ICampaingRepository
-    {
-        void CreateCampaing(Campaign campaign);
-        void DeleteCampaing(int id);
+    public interface ICampaignRepository
+	{
+        void CreateCampaign(Campaign campaign);
+        void DeleteCampaign(int id);
 
-        IEnumerable<Campaign> GetAllCampaings();
-        Campaign GetCampaingyId(int id);
-        Campaign GetCampaingByName(string name);
+        IEnumerable<Campaign> GetAllCampaigns();
+        Campaign GetCampaignById(int id);
+        Campaign GetCampaignByName(string name);
 
         void CreateInfo(Info info);
         void DeleteInfo(int id);
