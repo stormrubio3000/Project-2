@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ANightsTaleAPI.Models;
+using ANightsTale.Library;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +32,7 @@ namespace ANightsTaleAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public void Post([FromBody, Bind("Name")] Users user)
         {
-
+			
         }
 
         // PUT: api/Users/5
