@@ -8,16 +8,16 @@ using System.Text;
 
 namespace ANightsTale.DataAccess.Repos
 {
-    public class CampaingRepository : ICampaingRepository
-    {
+    public class CampaignRepository : ICampaignRepository
+	{
         private readonly ANightsTaleContext _db;
 
-        public CampaingRepository(ANightsTaleContext db)
+        public CampaignRepository(ANightsTaleContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void CreateCampaing(Library.Campaign campaign)
+        public void CreateCampaign(Library.Campaign campaign)
         {
             _db.Add(Mapper.Map(campaign));
         }
@@ -27,7 +27,7 @@ namespace ANightsTale.DataAccess.Repos
             _db.Add(Mapper.Map(info));
         }
 
-        public void DeleteCampaing(int id)
+        public void DeleteCampaign(int id)
         {
             _db.Remove(_db.Campaign.Find(id));
         }
@@ -37,7 +37,7 @@ namespace ANightsTale.DataAccess.Repos
             _db.Remove(_db.Info.Find(id));
         }
 
-        public IEnumerable<Library.Campaign> GetAllCampaings()
+        public IEnumerable<Library.Campaign> GetAllCampaigns()
         {
             return Mapper.Map(_db.Campaign);
         }
@@ -47,12 +47,12 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Info);
         }
 
-        public Library.Campaign GetCampaingByName(string name)
+        public Library.Campaign GetCampaignByName(string name)
         {
             return Mapper.Map(_db.Campaign.AsNoTracking().First(r => r.Name == name));
         }
 
-        public Library.Campaign GetCampaingyId(int id)
+        public Library.Campaign GetCampaignById(int id)
         {
             return Mapper.Map(_db.Campaign.AsNoTracking().First(r => r.CampaignId == id));
         }
