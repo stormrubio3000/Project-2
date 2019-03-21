@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ANightsTale.Library.Interfaces;
+using ANightsTale.DataAccess.Repos;
 using ANightsTale.Library;
+using ANightsTale.Library.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,9 @@ namespace ANightsTaleAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public IUserRepository Repo { get; }
+        public UserRepository Repo { get; }
 
-        public UsersController(IUserRepository repo)
+        public UsersController(UserRepository repo)
         {
             Repo = repo;
         }
