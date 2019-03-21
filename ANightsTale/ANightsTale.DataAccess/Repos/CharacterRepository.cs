@@ -20,22 +20,26 @@ namespace ANightsTale.DataAccess.Repos
 
         public void AddCharacter(Library.Character character)
         {
-            _db.Add(Mapper.Map(character));
+            if (character != null) { _db.Add(Mapper.Map(character)); }
+            else { throw new ArgumentNullException(); }
         }
 
         public void RemoveCharacter(Library.Character character)
         {
-            _db.Remove(Mapper.Map(character));
+            if (character != null) { _db.Remove(Mapper.Map(character)); }
+            else { throw new ArgumentNullException(); }
         }
 
         public void AddCharStats(Library.CharStats stats)
         {
-            _db.Add(Mapper.Map(stats));
+            if (stats != null) { _db.Add(Mapper.Map(stats)); }
+            else { throw new ArgumentNullException(); }
         }
 
         public void RemoveCharStats(Library.CharStats stats)
         {
-            _db.Remove(Mapper.Map(stats));
+            if (stats != null) { _db.Remove(Mapper.Map(stats)); }
+            else { throw new ArgumentNullException(); }
         }
 
         public IEnumerable<Library.Character> GetAllCharacters()
@@ -45,89 +49,109 @@ namespace ANightsTale.DataAccess.Repos
 
         public Library.Character GetCharacterById(int id)
         {
-            return Mapper.Map(_db.Character.First(c => c.CharacterId == id));
+            if (_db.Character.Any(c => c.CharacterId == id))
+            {
+                return Mapper.Map(_db.Character.First(c => c.CharacterId == id));
+            }
+            else { throw new ArgumentException("No existing characters with this ID."); }
         }
 
         public Library.Character GetCharacterByName(string name)
         {
-            return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
+            if (_db.Character.Any(c => c.Name.Equals(name)))
+            {
+                return Mapper.Map(_db.Character.First(c => c.Name.Equals(name)));
+            }
+            else { throw new ArgumentException("No existing characters with this name."); }
         }
 
         public IEnumerable<bool> GetSavingThrowProficiency(int classId)
         {
-            // STR, DEX, CON, INT, WIS, CHA
-            List<bool> proficiency = new List<bool> { false, false, false, false, false, false };
-
-            switch(classId)
+            if (_db.Class.Any(c => c.ClassId == classId))
             {
-                case 1:
-                    // Barbarian
-                    proficiency[0] = true;
-                    proficiency[2] = true;
-                    break;
-                case 2:
-                    // Fighter
-                    proficiency[0] = true;
-                    proficiency[2] = true;
-                    break;
-                case 3:
-                    // Paladin
-                    proficiency[4] = true;
-                    proficiency[5] = true;
-                    break;
-                case 4:
-                    // Bard
-                    proficiency[1] = true;
-                    proficiency[5] = true;
-                    break;
-                case 5:
-                    // Sorcerer
-                    proficiency[2] = true;
-                    proficiency[5] = true;
-                    break;
-                case 6:
-                    // Cleric
-                    proficiency[4] = true;
-                    proficiency[5] = true;
-                    break;
-                case 7:
-                    // Druid
-                    proficiency[3] = true;
-                    proficiency[4] = true;
-                    break;
-                case 8:
-                    // Ranger
-                    proficiency[0] = true;
-                    proficiency[1] = true;
-                    break;
-                case 9:
-                    // Rogue
-                    proficiency[1] = true;
-                    proficiency[3] = true;
-                    break;
-                case 10:
-                    // Wizard
-                    proficiency[3] = true;
-                    proficiency[4] = true;
-                    break;
-            }
+                // STR, DEX, CON, INT, WIS, CHA
+                List<bool> proficiency = new List<bool> { false, false, false, false, false, false };
 
-            return proficiency;
+                switch (classId)
+                {
+                    case 1:
+                        // Barbarian
+                        proficiency[0] = true;
+                        proficiency[2] = true;
+                        break;
+                    case 2:
+                        // Fighter
+                        proficiency[0] = true;
+                        proficiency[2] = true;
+                        break;
+                    case 3:
+                        // Paladin
+                        proficiency[4] = true;
+                        proficiency[5] = true;
+                        break;
+                    case 4:
+                        // Bard
+                        proficiency[1] = true;
+                        proficiency[5] = true;
+                        break;
+                    case 5:
+                        // Sorcerer
+                        proficiency[2] = true;
+                        proficiency[5] = true;
+                        break;
+                    case 6:
+                        // Cleric
+                        proficiency[4] = true;
+                        proficiency[5] = true;
+                        break;
+                    case 7:
+                        // Druid
+                        proficiency[3] = true;
+                        proficiency[4] = true;
+                        break;
+                    case 8:
+                        // Ranger
+                        proficiency[0] = true;
+                        proficiency[1] = true;
+                        break;
+                    case 9:
+                        // Rogue
+                        proficiency[1] = true;
+                        proficiency[3] = true;
+                        break;
+                    case 10:
+                        // Wizard
+                        proficiency[3] = true;
+                        proficiency[4] = true;
+                        break;
+                }
+
+                return proficiency;
+            }
+            else { throw new ArgumentException("No class with this ID exists."); }
         }
 
         public void SetRace(int raceId)
         {
-            var character = _db.Character.Last();
-            character.RaceId = raceId;
+            if (_db.Race.Any(r => r.RaceId == raceId))
+            {
+                var character = _db.Character.Last();
+                character.RaceId = raceId;
 
-            if (raceId == 1 || raceId == 4 || raceId == 5) character.Speed = 20;
-            else character.Speed = 30;
+                if (raceId == 1 || raceId == 4 || raceId == 5) character.Speed = 20;
+                else character.Speed = 30;
+            }
+            else { throw new ArgumentException("No race with this ID exists."); }
         }
 
         public void SetClass(int classId)
         {
-            _db.Character.Last().ClassId = classId;
-            _db.Character.Last().MaxHp = _db.Class.First(c => c.ClassId == classId).Hd;
+            if (_db.Class.Any(c => c.ClassId == classId))
+            {
+                _db.Character.Last().ClassId = classId;
+                _db.Character.Last().MaxHp = _db.Class.First(c => c.ClassId == classId).Hd;
+            }
+            else { throw new ArgumentException("No class with this ID exists."); }
         }
 
         public void SetRolls(IEnumerable<int> rolls)
@@ -145,17 +169,22 @@ namespace ANightsTale.DataAccess.Repos
 
         public void SetModifiers()
         {
-            var character = _db.Character.Last();
-            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+            if (_db.Character.Any() || _db.CharStats.Any())
+            {
+                var character = _db.Character.Last();
 
-            stats.StrMod = CalculateModifier(character.Str);
-            stats.DexMod = CalculateModifier(character.Dex);
-            stats.ConMod = CalculateModifier(character.Con);
-            stats.IntMod = CalculateModifier(character.Int);
-            stats.WisMod = CalculateModifier(character.Wis);
-            stats.ChaMod = CalculateModifier(character.Cha);
+                var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
 
-            character.MaxHp += stats.ConMod;
+                stats.StrMod = CalculateModifier(character.Str);
+                stats.DexMod = CalculateModifier(character.Dex);
+                stats.ConMod = CalculateModifier(character.Con);
+                stats.IntMod = CalculateModifier(character.Int);
+                stats.WisMod = CalculateModifier(character.Wis);
+                stats.ChaMod = CalculateModifier(character.Cha);
+
+                character.MaxHp += stats.ConMod;
+            }
+            else { throw new ArgumentNullException("No characters in the DB."); }
         }
 
         public void SetSavingThrows()
@@ -198,17 +227,23 @@ namespace ANightsTale.DataAccess.Repos
 
         public int CalculateModifier(int val)
         {
-            if (val == 1) return -5;
-            else if (val == 2 || val == 3) return -4;
-            else if (val == 4 || val == 5) return -3;
-            else if (val == 6 || val == 7) return -2;
-            else if (val == 8 || val == 9) return -1;
-            else if (val == 10 || val == 11) return 0;
-            else if (val == 12 || val == 13) return 1;
-            else if (val == 14 || val == 15) return 2;
-            else if (val == 16 || val == 17) return 3;
-            else if (val == 18 || val == 19) return 4;
-            else return 5;
+            if (val >= 1 || val <= 20)
+            {
+                if (val == 1) return -5;
+                else if (val == 2 || val == 3) return -4;
+                else if (val == 4 || val == 5) return -3;
+                else if (val == 6 || val == 7) return -2;
+                else if (val == 8 || val == 9) return -1;
+                else if (val == 10 || val == 11) return 0;
+                else if (val == 12 || val == 13) return 1;
+                else if (val == 14 || val == 15) return 2;
+                else if (val == 16 || val == 17) return 3;
+                else if (val == 18 || val == 19) return 4;
+                else return 5;
+            }
+            else {
+                throw new ArgumentOutOfRangeException("Attributes must be between 1 and 20 inclusive");
+            }
         }
 
         public int CalculateSavingThrow(int val, int pb, bool proficient)
