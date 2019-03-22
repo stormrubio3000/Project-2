@@ -31,7 +31,7 @@ namespace ANightsTaleAPI.Controllers
         }
 
         // GET: api/Campaign/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetCampaign")]
         public Campaign Get(int id)
         {
 			return Repo.GetCampaignById(id);

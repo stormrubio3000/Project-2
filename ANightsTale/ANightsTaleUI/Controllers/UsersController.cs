@@ -29,7 +29,7 @@ namespace ANightsTaleAPI.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetUsers")]
         public Users Get(int id)
         {
             return Repo.GetUserById(id);

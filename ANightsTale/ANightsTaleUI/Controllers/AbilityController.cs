@@ -31,7 +31,7 @@ namespace ANightsTaleAPI.Controllers
         }
 
         // GET: api/Ability/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetAbility")]
         public Abilities Get(int id)
         {
 			return Repo.GetAbilityById(id);
