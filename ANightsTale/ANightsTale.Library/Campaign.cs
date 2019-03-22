@@ -6,7 +6,7 @@ namespace ANightsTale.Library
 {
     public class Campaign
     {
-        public int CampaingID { get; set; }
+        public int CampaignID { get; set; }
         public string Name { get; set; }
     }
 }
