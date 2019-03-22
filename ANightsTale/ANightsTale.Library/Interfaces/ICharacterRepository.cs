@@ -10,6 +10,10 @@ namespace ANightsTale.Library.Interfaces
         void RemoveCharacter(Character character);
         void AddCharStats(CharStats stats);
         void RemoveCharStats(CharStats stats);
+        void AddRace(Race race);
+        void RemoveRace(Race race);
+        void AddClass(Class myClass);
+        void RemoveClass(Class myClass);
 
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);

@@ -42,6 +42,30 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentNullException(); }
         }
 
+        public void AddRace(Library.Race race)
+        {
+            if (race != null) { _db.Add(Mapper.Map(race)); }
+            else { throw new ArgumentNullException(); }
+        }
+
+        public void RemoveRace(Library.Race race)
+        {
+            if (race != null) { _db.Remove(Mapper.Map(race)); }
+            else { throw new ArgumentNullException(); }
+        }
+
+        public void AddClass(Library.Class myClass)
+        {
+            if (myClass != null) { _db.Add(Mapper.Map(myClass)); }
+            else { throw new ArgumentNullException(); }
+        }
+
+        public void RemoveClass(Library.Class myClass)
+        {
+            if (myClass != null) { _db.Remove(Mapper.Map(myClass)); }
+            else { throw new ArgumentNullException(); }
+        }
+
         public IEnumerable<Library.Character> GetAllCharacters()
         {        
             return Mapper.Map(_db.Character);
@@ -172,7 +196,6 @@ namespace ANightsTale.DataAccess.Repos
             if (_db.Character.Any() || _db.CharStats.Any())
             {
                 var character = _db.Character.Last();
-
                 var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
 
                 stats.StrMod = CalculateModifier(character.Str);
@@ -189,17 +212,21 @@ namespace ANightsTale.DataAccess.Repos
 
         public void SetSavingThrows()
         {
-            var character = _db.Character.Last();
-            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
-            var proficiency = GetSavingThrowProficiency(character.ClassId).ToList();
-            int pb = stats.Pb;
+            if (_db.Character.Any() || _db.CharStats.Any())
+            {
+                var character = _db.Character.Last();
+                var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+                var proficiency = GetSavingThrowProficiency(character.ClassId).ToList();
+                int pb = stats.Pb;
 
-            stats.StrSave = CalculateSavingThrow(stats.StrMod, pb, proficiency[0]);
-            stats.DexSave = CalculateSavingThrow(stats.DexMod, pb, proficiency[1]);
-            stats.ConSave = CalculateSavingThrow(stats.ConMod, pb, proficiency[2]);
-            stats.IntSave = CalculateSavingThrow(stats.IntMod, pb, proficiency[3]);
-            stats.WisSave = CalculateSavingThrow(stats.WisMod, pb, proficiency[4]);
-            stats.ChaSave = CalculateSavingThrow(stats.ChaMod, pb, proficiency[5]);
+                stats.StrSave = CalculateSavingThrow(stats.StrMod, pb, proficiency[0]);
+                stats.DexSave = CalculateSavingThrow(stats.DexMod, pb, proficiency[1]);
+                stats.ConSave = CalculateSavingThrow(stats.ConMod, pb, proficiency[2]);
+                stats.IntSave = CalculateSavingThrow(stats.IntMod, pb, proficiency[3]);
+                stats.WisSave = CalculateSavingThrow(stats.WisMod, pb, proficiency[4]);
+                stats.ChaSave = CalculateSavingThrow(stats.ChaMod, pb, proficiency[5]);
+            }
+            else { throw new ArgumentNullException("No characters in the DB."); }
         }
 
         public IEnumerable<int> InitialRolls()
