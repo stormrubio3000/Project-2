@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ANightsTale.DataAccess;
 using ANightsTale.DataAccess.Repos;
+using ANightsTale.Library;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,8 @@ namespace ANightsTaleUI
 			services.AddScoped<ItemRepository>();
             services.AddScoped<UserRepository>();
 			services.AddDbContext<ANightsTaleContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("ProjectDB")));
+
+			services.AddSingleton<RngProvider>();
 
             services.AddDbContext<AuthDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AuthDB")));
