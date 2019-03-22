@@ -225,13 +225,13 @@ namespace ANightsTale.DataAccess
 
         public static Library.Campaign Map(Campaign r) => new Library.Campaign
         {
-            CampaingID = r.CampaignId,
+            CampaignID = r.CampaignId,
             Name = r.Name,
         };
 
         public static Campaign Map(Library.Campaign r) => new Campaign
         {
-            CampaignId = r.CampaingID,
+            CampaignId = r.CampaignID,
             Name = r.Name,
         };
 

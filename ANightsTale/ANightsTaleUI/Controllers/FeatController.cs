@@ -30,7 +30,7 @@ namespace ANightsTaleAPI.Controllers
         }
 
         // GET: api/Feat/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetFeat")]
         public Feats Get(int id)
         {
 			return Repo.GetFeatById(id);
