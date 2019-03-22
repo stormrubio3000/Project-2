@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ANightsTale.Library.Interfaces;
+using ANightsTale.DataAccess.Repos;
 using ANightsTale.Library;
+using ANightsTale.Library.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,25 +14,25 @@ namespace ANightsTaleAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public IUserRepository Repo { get; }
+        public UserRepository Repo { get; }
 
-        public UsersController(IUserRepository repo)
+        public UsersController(UserRepository repo)
         {
             Repo = repo;
         }
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Users> Get()
         {
-            return new string[] { "value1", "value2" };
+			return Repo.GetAllUsers();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Users Get(int id)
         {
-            return "value";
+            return Repo.GetUserById(id);
         }
 
         // POST: api/Users
@@ -42,18 +43,6 @@ namespace ANightsTaleAPI.Controllers
         {
             Repo.CreateUser(user);
             Repo.Save();
-        }
-
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
