@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using ANightsTale.DataAccess;
 using ANightsTale.DataAccess.Repos;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,12 +35,57 @@ namespace ANightsTaleUI
 			services.AddScoped<CampaignRepository>();
 			services.AddScoped<CharacterRepository>();
 			services.AddScoped<ItemRepository>();
-			services.AddScoped<UserRepository>();
+            services.AddScoped<UserRepository>();
 			services.AddDbContext<ANightsTaleContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("ProjectDB")));
 
+            services.AddDbContext<AuthDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AuthDB")));
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-		}
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                // we could just use defaults and not set anything on options
+                options.Password.RequiredLength = 12;
+                options.Password.RequireNonAlphanumeric = true;
+                // many options here
+            })
+                .AddEntityFrameworkStores<AuthDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "CharacterServiceAuth";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = context =>
+                    {
+                        // prevent redirect, just return unauthorized
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.Headers.Remove("Location");
+                        // we use Task.FromResult when we're in an async context
+                        // but there's nothing to await.
+                        return Task.FromResult(0);
+                    },
+                    OnRedirectToAccessDenied = context =>
+                    {
+                        // prevent redirect, just return forbidden
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.Headers.Remove("Location");
+                        // we use Task.FromResult when we're in an async context
+                        // but there's nothing to await.
+                        return Task.FromResult(0);
+                    }
+                };
+            });
+
+            services.AddAuthentication();
+
+            services.AddMvc(options =>
+            {
+                options.ReturnHttpNotAcceptable = true;
+            })
+                .AddXmlSerializerFormatters()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -52,7 +100,9 @@ namespace ANightsTaleUI
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
+            app.UseAuthentication();
+
+            app.UseHttpsRedirection();
 			app.UseMvc();
 		}
 	}
