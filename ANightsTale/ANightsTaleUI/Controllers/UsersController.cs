@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ANightsTale.DataAccess;
 using ANightsTale.DataAccess.Repos;
@@ -16,6 +17,7 @@ namespace ANightsTaleAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         public SignInManager<IdentityUser> SignInManager { get; }
@@ -38,6 +40,7 @@ namespace ANightsTaleAPI.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}", Name = "GetUsers")]
+        [Authorize]
         public ANightsTale.Library.Users Get(int id)
         {
             return Repo.GetUserById(id);
@@ -54,6 +57,15 @@ namespace ANightsTaleAPI.Controllers
             {
                 return Unauthorized(); // 401 for login failure
             }
+
+            return NoContent();
+        }
+
+        // POST /account/logout
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Logout()
+        {
+            await SignInManager.SignOutAsync();
 
             return NoContent();
         }
@@ -114,6 +126,28 @@ namespace ANightsTaleAPI.Controllers
             Repo.Save();
 
             return NoContent();
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public AccountDetails Details()
+        {
+            // if we want to know which user is logged in or which roles he has
+            // apart from [Authorize] attribute...
+            // we have User.Identity.IsAuthenticated
+            // User.IsInRole("admin")
+            // User.Identity.Name
+            if (!User.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+            var details = new AccountDetails
+            {
+                Username = User.Identity.Name,
+                Roles = User.Claims.Where(c => c.Type == ClaimTypes.Role)
+                                   .Select(c => c.Value)
+            };
+            return details;
         }
     }
 }
