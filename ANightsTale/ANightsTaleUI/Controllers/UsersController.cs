@@ -43,6 +43,22 @@ namespace ANightsTaleAPI.Controllers
             return Repo.GetUserById(id);
         }
 
+        [HttpPost("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(Login login)
+        {
+            Microsoft.AspNetCore.Identity.SignInResult result = await SignInManager.PasswordSignInAsync(
+                login.Username, login.Password, login.RememberMe, false);
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized(); // 401 for login failure
+            }
+
+            return NoContent();
+        }
+
+
         // POST: api/Users
         [HttpPost]
         [AllowAnonymous]

@@ -53,7 +53,7 @@ namespace ANightsTaleUI
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "CharacterServiceAuth";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 options.Events = new CookieAuthenticationEvents
                 {
                     OnRedirectToLogin = context =>
