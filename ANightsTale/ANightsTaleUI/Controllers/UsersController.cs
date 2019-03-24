@@ -17,7 +17,7 @@ namespace ANightsTaleAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UsersController : ControllerBase
     {
         public SignInManager<IdentityUser> SignInManager { get; }
