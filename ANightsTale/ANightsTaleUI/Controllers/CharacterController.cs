@@ -15,10 +15,12 @@ namespace ANightsTaleAPI.Controllers
     {
 
 		public CharacterRepository Repo { get; }
+        public UserRepository UserRepo { get; }
 
-		public CharacterController(CharacterRepository repo)
+        public CharacterController(CharacterRepository repo, UserRepository userRepo)
 		{
 			Repo = repo;
+            UserRepo = userRepo;
 		}
 
 
@@ -36,6 +38,14 @@ namespace ANightsTaleAPI.Controllers
         {
 			return Repo.GetCharacterById(id);
 		}
+
+        // GET: api/Character/5
+        [HttpGet("CharCampUsr/{id}/{username}", Name = "CharCampUsr")]
+        public IEnumerable<Character> Get(int id,string username)
+        {
+            int usrId = UserRepo.GetUserByUsername(username).UserID;
+            return Repo.GetCharacterByCampUsr(id, usrId);
+        }
 
         // POST: api/Character
         [HttpPost]

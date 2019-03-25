@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ANightsTale.Library;
 using ANightsTale.Library.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ANightsTale.DataAccess.Repos
 {
@@ -69,6 +70,16 @@ namespace ANightsTale.DataAccess.Repos
         public IEnumerable<Library.Character> GetAllCharacters()
         {        
             return Mapper.Map(_db.Character);
+        }
+
+        public IEnumerable<Library.Character> GetCharacterByCampUsr(int campId, int usrId)
+        {
+
+            if (_db.Character.Any(c => c.CampaignId == campId && c.UsersId == usrId))
+            {
+                return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId && c.UsersId == usrId));
+            }
+            else { throw new ArgumentException("No existing characters with this ID."); }
         }
 
         public Library.Character GetCharacterById(int id)
