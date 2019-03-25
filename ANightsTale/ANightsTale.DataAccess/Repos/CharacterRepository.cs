@@ -18,15 +18,36 @@ namespace ANightsTale.DataAccess.Repos
             _rand = rand ?? throw new ArgumentNullException(nameof(rand));
         }
 
+        public void CreateCharacter(Library.Character character, IEnumerable<int> skills)
+        {
+            SetSpeed(character);
+            SetMaxHp(character);
+
+            var stats = new Library.CharStats();
+            stats.CharacterID = character.CharacterID;
+            stats.HP = character.MaxHP;
+
+            SetModifiers(character, stats);
+            SetSavingThrows(character, stats);
+            SetSkills(stats);
+            UpdateSkills(skills.ToList(), stats);
+
+            AddCharacter(character);
+            Save();
+
+            AddCharStats(stats);
+            Save();
+        }
+
         public void AddCharacter(Library.Character character)
         {
             if (character != null) { _db.Add(Mapper.Map(character)); }
             else { throw new ArgumentNullException(); }
         }
 
-        public void RemoveCharacter(Library.Character character)
+        public void RemoveCharacter(int id)
         {
-            if (character != null) { _db.Remove(Mapper.Map(character)); }
+            if (_db.Character.Any(c => c.CharacterId == id)) { _db.Remove(_db.Character.Find(id)); }
             else { throw new ArgumentNullException(); }
         }
 
@@ -36,9 +57,9 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentNullException(); }
         }
 
-        public void RemoveCharStats(Library.CharStats stats)
+        public void RemoveCharStats(int id)
         {
-            if (stats != null) { _db.Remove(Mapper.Map(stats)); }
+            if (_db.CharStats.Any(c => c.Id == id)) { _db.Remove(_db.CharStats.Find(id)); }
             else { throw new ArgumentNullException(); }
         }
 
@@ -48,9 +69,9 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentNullException(); }
         }
 
-        public void RemoveRace(Library.Race race)
+        public void RemoveRace(int id)
         {
-            if (race != null) { _db.Remove(Mapper.Map(race)); }
+            if (_db.Race.Any(r => r.RaceId == id)) { _db.Remove(_db.Race.Find(id)); }
             else { throw new ArgumentNullException(); }
         }
 
@@ -60,9 +81,9 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentNullException(); }
         }
 
-        public void RemoveClass(Library.Class myClass)
+        public void RemoveClass(int id)
         {
-            if (myClass != null) { _db.Remove(Mapper.Map(myClass)); }
+            if (_db.Class.Any(c => c.ClassId == id)) { _db.Remove(_db.Class.Find(id)); }
             else { throw new ArgumentNullException(); }
         }
 
@@ -155,32 +176,28 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentException("No class with this ID exists."); }
         }
 
-        public void SetRace(int raceId)
+        public void SetSpeed(Library.Character character)
         {
-            if (_db.Race.Any(r => r.RaceId == raceId))
-            {
-                var character = _db.Character.Last();
-                character.RaceId = raceId;
-
-                if (raceId == 1 || raceId == 4 || raceId == 5) character.Speed = 20;
+            if (_db.Race.Any(r => r.RaceId == character.RaceID))
+            { 
+                if (character.RaceID == 1 || character.RaceID == 4 
+                    || character.RaceID == 5) character.Speed = 20;
                 else character.Speed = 30;
             }
             else { throw new ArgumentException("No race with this ID exists."); }
         }
 
-        public void SetClass(int classId)
+        public void SetMaxHp(Library.Character character)
         {
-            if (_db.Class.Any(c => c.ClassId == classId))
+            if (_db.Class.Any(c => c.ClassId == character.ClassID))
             {
-                _db.Character.Last().ClassId = classId;
-                _db.Character.Last().MaxHp = _db.Class.First(c => c.ClassId == classId).Hd;
+                character.MaxHP = _db.Class.First(c => c.ClassId == character.ClassID).Hd;
             }
             else { throw new ArgumentException("No class with this ID exists."); }
         }
 
-        public void SetRolls(IEnumerable<int> rolls)
+        public void SetRolls(IEnumerable<int> rolls, Library.Character character)
         {
-            var character = _db.Character.Last();
             var attributes = rolls.ToList();
 
             character.Str = attributes[0];
@@ -191,42 +208,49 @@ namespace ANightsTale.DataAccess.Repos
             character.Cha = attributes[5];
         }
 
-        public void SetModifiers()
+        public void SetModifiers(Library.Character character, Library.CharStats stats)
         {
-            if (_db.Character.Any() || _db.CharStats.Any())
+            if (character == null || stats == null)
             {
-                var character = _db.Character.Last();
-                var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
+                stats.STR_Mod = CalculateModifier(character.Str);
+                stats.DEX_Mod = CalculateModifier(character.Dex);
+                stats.CON_Mod = CalculateModifier(character.Con);
+                stats.INT_Mod = CalculateModifier(character.Int);
+                stats.WIS_Mod = CalculateModifier(character.Wis);
+                stats.CHA_Mod = CalculateModifier(character.Cha);
 
-                stats.StrMod = CalculateModifier(character.Str);
-                stats.DexMod = CalculateModifier(character.Dex);
-                stats.ConMod = CalculateModifier(character.Con);
-                stats.IntMod = CalculateModifier(character.Int);
-                stats.WisMod = CalculateModifier(character.Wis);
-                stats.ChaMod = CalculateModifier(character.Cha);
-
-                character.MaxHp += stats.ConMod;
+                character.MaxHP += stats.CON_Mod;
             }
-            else { throw new ArgumentNullException("No characters in the DB."); }
+            else { throw new ArgumentNullException("Character cannot be null..."); }
         }
 
-        public void SetSavingThrows()
+        public void SetSavingThrows(Library.Character character, Library.CharStats stats)
         {
-            if (_db.Character.Any() || _db.CharStats.Any())
+            if (character == null || stats == null)
             {
-                var character = _db.Character.Last();
-                var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
-                var proficiency = GetSavingThrowProficiency(character.ClassId).ToList();
-                int pb = stats.Pb;
+                var proficiency = GetSavingThrowProficiency(character.ClassID).ToList();
+                int pb = stats.PB;
 
-                stats.StrSave = CalculateSavingThrow(stats.StrMod, pb, proficiency[0]);
-                stats.DexSave = CalculateSavingThrow(stats.DexMod, pb, proficiency[1]);
-                stats.ConSave = CalculateSavingThrow(stats.ConMod, pb, proficiency[2]);
-                stats.IntSave = CalculateSavingThrow(stats.IntMod, pb, proficiency[3]);
-                stats.WisSave = CalculateSavingThrow(stats.WisMod, pb, proficiency[4]);
-                stats.ChaSave = CalculateSavingThrow(stats.ChaMod, pb, proficiency[5]);
+                stats.STR_Save = CalculateSavingThrow(stats.STR_Mod, pb, proficiency[0]);
+                stats.DEX_Save = CalculateSavingThrow(stats.DEX_Mod, pb, proficiency[1]);
+                stats.CON_Save = CalculateSavingThrow(stats.CON_Mod, pb, proficiency[2]);
+                stats.INT_Save = CalculateSavingThrow(stats.INT_Mod, pb, proficiency[3]);
+                stats.WIS_Save = CalculateSavingThrow(stats.WIS_Mod, pb, proficiency[4]);
+                stats.CHA_Save = CalculateSavingThrow(stats.CHA_Mod, pb, proficiency[5]);
             }
-            else { throw new ArgumentNullException("No characters in the DB."); }
+            else { throw new ArgumentNullException("Character cannot be null..."); }
+        }
+
+        public List<int> ManageRolls()
+        {
+            List<int> rolls = new List<int>();
+
+            for (int j = 0; j < 4; j++)
+            {
+                rolls.Add(_rand.Rng.Next(1, 7));
+            }
+
+            return rolls.OrderBy(o => o).Skip(1).ToList();
         }
 
         public IEnumerable<int> InitialRolls()
@@ -236,13 +260,7 @@ namespace ANightsTale.DataAccess.Repos
 
             for (int i = 0; i < 6; i++)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    rolls.Add(_rand.Rng.Next(1, 7));
-                }
-
-                rolls.OrderByDescending(o => o);
-                rolls.Remove(rolls.Last());
+                rolls = ManageRolls();
 
                 totals.Add(rolls[0] + rolls[1] + rolls[2]);
 
@@ -282,119 +300,114 @@ namespace ANightsTale.DataAccess.Repos
             return val;
         }
 
-        public void SetSkills()
+        public void SetSkills(Library.CharStats stats)
         {
-            var character = _db.Character.Last();
-            var stats = _db.CharStats.First(s => s.CharacterId == character.CharacterId);
-
             //STR
-            stats.Athletics = stats.StrMod;
+            stats.Athletics = stats.STR_Mod;
 
             //DEX
-            stats.Acrobatics = stats.DexMod;
-            stats.SleightOfHand = stats.DexMod;
-            stats.Stealth = stats.DexMod;
+            stats.Acrobatics = stats.DEX_Mod;
+            stats.SleightOfHand = stats.DEX_Mod;
+            stats.Stealth = stats.DEX_Mod;
 
             //INT
-            stats.Arcana = stats.IntMod;
-            stats.History = stats.IntMod;
-            stats.Investigation = stats.IntMod;
-            stats.Nature = stats.IntMod;
-            stats.Religion = stats.IntMod;
+            stats.Arcana = stats.INT_Mod;
+            stats.History = stats.INT_Mod;
+            stats.Investigation = stats.INT_Mod;
+            stats.Nature = stats.INT_Mod;
+            stats.Religion = stats.INT_Mod;
 
             //WIS
-            stats.AnimalHandling = stats.WisMod;
-            stats.Insight = stats.WisMod;
-            stats.Medicine = stats.WisMod;
-            stats.Perception = stats.WisMod;
-            stats.Survival = stats.WisMod;
+            stats.AnimalHandling = stats.WIS_Mod;
+            stats.Insight = stats.WIS_Mod;
+            stats.Medicine = stats.WIS_Mod;
+            stats.Perception = stats.WIS_Mod;
+            stats.Survival = stats.WIS_Mod;
 
             //CHA
-            stats.Deception = stats.ChaMod;
-            stats.Intimidation = stats.ChaMod;
-            stats.Persuasion = stats.ChaMod;
-            stats.Performance = stats.ChaMod;
+            stats.Deception = stats.CHA_Mod;
+            stats.Intimidation = stats.CHA_Mod;
+            stats.Persuasion = stats.CHA_Mod;
+            stats.Performance = stats.CHA_Mod;
         }
 
-        public void UpdateSkills(List<int> skills, int charId)
+        public void UpdateSkills(List<int> skills, Library.CharStats stats)
         {
-            var stats = _db.CharStats.First(s => s.CharacterId == charId);
-
             foreach (int skill in skills)
             {
                 switch (skill)
                 {
                     case 1:
                         // Acrobatics
-                        stats.Acrobatics += stats.Pb;
+                        stats.Acrobatics += stats.PB;
                         break;
                     case 2:
                         // AnimalHandling
-                        stats.AnimalHandling += stats.Pb;
+                        stats.AnimalHandling += stats.PB;
                         break;
                     case 3:
                         // Arcana
-                        stats.Arcana += stats.Pb;
+                        stats.Arcana += stats.PB;
                         break;
                     case 4:
                         // Athletics
-                        stats.Athletics += stats.Pb;
+                        stats.Athletics += stats.PB;
                         break;
                     case 5:
                         // Deception
-                        stats.Deception += stats.Pb;
+                        stats.Deception += stats.PB;
                         break;
                     case 6:
                         // History
-                        stats.History += stats.Pb;
+                        stats.History += stats.PB;
                         break;
                     case 7:
                         // Insight
-                        stats.Insight += stats.Pb;
+                        stats.Insight += stats.PB;
                         break;
                     case 8:
                         // Intimidation
-                        stats.Intimidation += stats.Pb;
+                        stats.Intimidation += stats.PB;
                         break;
                     case 9:
                         // Investigation
-                        stats.Investigation += stats.Pb;
+                        stats.Investigation += stats.PB;
                         break;
                     case 10:
                         // Medicine
-                        stats.Medicine += stats.Pb;
+                        stats.Medicine += stats.PB;
                         break;
                     case 11:
                         // Nature
-                        stats.Nature += stats.Pb;
+                        stats.Nature += stats.PB;
                         break;
                     case 12:
                         // Perception
-                        stats.Perception += stats.Pb;
+                        stats.Perception += stats.PB;
                         break;
                     case 13:
                         // Performance
-                        stats.Performance += stats.Pb;
+                        stats.Performance += stats.PB;
                         break;
                     case 14:
                         // Persuasion
-                        stats.Persuasion += stats.Pb;
+                        stats.Persuasion += stats.PB;
                         break;
                     case 15:
                         // Religion
-                        stats.Religion += stats.Pb;
+                        stats.Religion += stats.PB;
                         break;
                     case 16:
                         // Sleight Of Hand
-                        stats.SleightOfHand += stats.Pb;
+                        stats.SleightOfHand += stats.PB;
                         break;
                     case 17:
                         // Stealth
-                        stats.Stealth += stats.Pb;
+                        stats.Stealth += stats.PB;
                         break;
                     case 18:
                         // Survival
-                        stats.Survival += stats.Pb;
+                        stats.Survival += stats.PB;
                         break;
                     default:
                         throw new ArgumentException("This skill does not exist.");

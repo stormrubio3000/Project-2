@@ -6,31 +6,34 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface ICharacterRepository
     {
+        void CreateCharacter(Character character, IEnumerable<int> skills);
+
         void AddCharacter(Character character);
-        void RemoveCharacter(Character character);
+        void RemoveCharacter(int id);
         void AddCharStats(CharStats stats);
-        void RemoveCharStats(CharStats stats);
+        void RemoveCharStats(int id);
         void AddRace(Race race);
-        void RemoveRace(Race race);
+        void RemoveRace(int id);
         void AddClass(Class myClass);
-        void RemoveClass(Class myClass);
+        void RemoveClass(int id);
 
         IEnumerable<Character> GetAllCharacters();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
         IEnumerable<bool> GetSavingThrowProficiency(int classId);
 
-        void SetRace(int raceId);
-        void SetClass(int classId);
-        void SetRolls(IEnumerable<int> rolls);
-        void SetModifiers();
-        void SetSavingThrows();
+        void SetSpeed(Character character);
+        void SetMaxHp(Character character);
+        void SetRolls(IEnumerable<int> rolls, Library.Character character);
+        void SetModifiers(Character character, CharStats stats);
+        void SetSavingThrows(Character character, CharStats stats);
+        void SetSkills(CharStats stats);
 
         IEnumerable<int> InitialRolls();
+        List<int> ManageRolls();
         int CalculateModifier(int val);
         int CalculateSavingThrow(int val, int pb, bool proficient);
-        void SetSkills();
-        void UpdateSkills(List<int> skills, int charId);
+        void UpdateSkills(List<int> skills, CharStats stats);
 
         void Save();
     }
