@@ -40,8 +40,8 @@ namespace ANightsTaleAPI.Controllers
 		}
 
         // GET: api/Character/5
-        [HttpGet("CharCampUsr/{id}/{username}", Name = "CharCampUsr")]
-        public IEnumerable<Character> Get(int id,string username)
+        [HttpGet("CharCampUsr/{id}", Name = "CharCampUsr")]
+        public IEnumerable<Character> Get(int id,[FromQuery] string username)
         {
             int usrId = UserRepo.GetUserByUsername(username).UserID;
             return Repo.GetCharacterByCampUsr(id, usrId);
