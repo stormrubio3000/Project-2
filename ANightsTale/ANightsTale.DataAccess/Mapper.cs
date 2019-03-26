@@ -156,6 +156,9 @@ namespace ANightsTale.DataAccess
             Description = r.Name
         };
 
+        public static IEnumerable<Library.Race> Map(IEnumerable<Race> race) => race.Select(Map);
+        public static IEnumerable<Race> Map(IEnumerable<Library.Race> race) => race.Select(Map);
+
         public static Library.Abilities Map(Abilities r) => new Library.Abilities
         {
             AbilityID = r.AbilityId,

@@ -7,6 +7,8 @@ namespace ANightsTaleAPI.Models
 {
     public class Character
     {
+        public int CharacterID { get; set; }
+        public int UserID { get; set; }
         public string Name { get; set; }
         public string Bio { get; set; }
         public string CampaignName { get; set; }

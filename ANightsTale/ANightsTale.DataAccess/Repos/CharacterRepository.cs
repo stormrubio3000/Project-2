@@ -95,22 +95,12 @@ namespace ANightsTale.DataAccess.Repos
 
         public IEnumerable<Library.Character> GetCharacterByCampUsr(int campId, int usrId)
         {
-
-            if (_db.Character.Any(c => c.CampaignId == campId && c.UsersId == usrId))
-            {
-                return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId && c.UsersId == usrId));
-            }
-            else { throw new ArgumentException("No existing characters with this ID."); }
+            return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId && c.UsersId == usrId));
         }
 
         public IEnumerable<Library.Character> GetCharacterByCamp(int campId)
         {
-
-            if (_db.Character.Any(c => c.CampaignId == campId))
-            {
-                return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId));
-            }
-            else { throw new ArgumentException("No existing characters with this ID."); }
+            return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId));
         }
 
         public Library.Character GetCharacterById(int id)
@@ -120,6 +110,16 @@ namespace ANightsTale.DataAccess.Repos
                 return Mapper.Map(_db.Character.First(c => c.CharacterId == id));
             }
             else { throw new ArgumentException("No existing characters with this ID."); }
+        }
+
+        public Library.Race GetRaceById(int id)
+        {
+            return Mapper.Map(_db.Race.First(c => c.RaceId == id));
+        }
+
+        public Library.Class GetClassById(int id)
+        {
+            return Mapper.Map(_db.Class.First(c => c.ClassId == id));
         }
 
         public Library.Character GetCharacterByName(string name)
