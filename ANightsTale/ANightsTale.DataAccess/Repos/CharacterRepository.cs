@@ -82,6 +82,16 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentException("No existing characters with this ID."); }
         }
 
+        public IEnumerable<Library.Character> GetCharacterByCamp(int campId)
+        {
+
+            if (_db.Character.Any(c => c.CampaignId == campId))
+            {
+                return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId));
+            }
+            else { throw new ArgumentException("No existing characters with this ID."); }
+        }
+
         public Library.Character GetCharacterById(int id)
         {
             if (_db.Character.Any(c => c.CharacterId == id))
