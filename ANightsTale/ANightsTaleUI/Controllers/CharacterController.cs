@@ -16,15 +16,13 @@ namespace ANightsTaleAPI.Controllers
 
 		public CharacterRepository Repo { get; }
         public UserRepository UserRepo { get; }
-        public CampaignRepository CampRepo { get; }
-		public ItemRepository ItemRepo { get; }
 
-        public CharacterController(CharacterRepository repo, UserRepository userRepo, CampaignRepository campRepo, ItemRepository itemRepo)
+        public CharacterController(CharacterRepository repo, UserRepository userRepo,ItemRepository itemRepo, CampaignRepository campRepo)
 		{
 			Repo = repo;
             UserRepo = userRepo;
-            CampRepo = campRepo;
 			ItemRepo = itemRepo;
+            CampRepo = campRepo;
 		}
 
 
