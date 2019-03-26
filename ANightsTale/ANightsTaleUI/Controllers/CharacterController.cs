@@ -47,11 +47,12 @@ namespace ANightsTaleAPI.Controllers
             return Repo.GetCharacterByCampUsr(id, usrId);
         }
 
-        //[HttpGet("CharCampUsr/", Name = "CharCamp")]
-        //public IEnumerable<Character> GetChar(int id)
-        //{
-        //    return Repo.GetCharacterByCamp(id);
-        //}
+        [HttpGet("{id}", Name = "CharCamp")]
+        public IEnumerable<Character> GetCharCamp(int id)
+        {
+
+            return Repo.GetCharacterByCamp(id);
+        }
 
         // POST: api/Character
         [HttpPost]
