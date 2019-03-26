@@ -5,16 +5,15 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Xunit;
 
 namespace ANightsTale.Tests.Repos.Character
 {
-    public class DeleteTests
+    public class RollsTests
     {
         [Fact]
-        public void DeleteCharacterFromDbIsSuccessful()
+        public void RollsAreInTheRightRange()
         {
             // arrange
             // In-memory database only exists while the connection is open
@@ -42,17 +41,18 @@ namespace ANightsTale.Tests.Repos.Character
                     var charRepo = new CharacterRepository(context, rand);
                     DataSeeding seed = new DataSeeding(context, charRepo);
 
-                    seed.SeedCharacterSupportClasses();
-                    var character = seed.SeedCharacter();
-
-                    charRepo.AddCharacter(character);
-                    charRepo.Save();
-
-                    charRepo.RemoveCharacter(1);
-                    charRepo.Save();
+                    var newRolls = new List<int>();
+                    for (int i=0; i<100; i++)
+                    {
+                        newRolls = charRepo.ManageRolls();
+                        Assert.Equal(3, newRolls.Count);
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Assert.True(newRolls[j] > 0 && newRolls[j] < 7);
+                        }
+                    }
 
                     // Assert
-                    Assert.False(context.Character.Any());
                 }
             }
             finally
@@ -62,7 +62,7 @@ namespace ANightsTale.Tests.Repos.Character
         }
 
         [Fact]
-        public void DeleteCharacterFromDbAlsoDeletesCharStats()
+        public void RollsSetProperly()
         {
             // arrange
             // In-memory database only exists while the connection is open
@@ -90,21 +90,23 @@ namespace ANightsTale.Tests.Repos.Character
                     var charRepo = new CharacterRepository(context, rand);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedCharacterSupportClasses();
-
                     var character = seed.SeedCharacter();
-
                     charRepo.AddCharacter(character);
                     charRepo.Save();
 
-                    var stats = seed.SeedCharStats(character);
-                    charRepo.AddCharStats(stats);
-                    charRepo.Save();
+                    List<int> rolls = new List<int>() { 5, 18, 10, 11, 12, 14};
 
-                    charRepo.RemoveCharacter(1);
-                    charRepo.Save();
+                    charRepo.SetRolls(rolls);
+                    var test = charRepo.GetCharacterById(1);
 
                     // Assert
-                    Assert.False(context.CharStats.Any());
+
+                    Assert.Equal(5, test.Str);
+                    Assert.Equal(18, test.Dex);
+                    Assert.Equal(10, test.Con);
+                    Assert.Equal(11, test.Int);
+                    Assert.Equal(12, test.Wis);
+                    Assert.Equal(14, test.Cha);
                 }
             }
             finally

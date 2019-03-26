@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ANightsTale.DataAccess
 {
-    class Mapper
+    public class Mapper
     {
         public static Library.Character Map(Character character) => new Library.Character
         {
