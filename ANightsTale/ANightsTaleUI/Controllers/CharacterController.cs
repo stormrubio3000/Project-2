@@ -33,11 +33,11 @@ namespace ANightsTaleAPI.Controllers
         }
 
         // GET: api/Character/5
-        [HttpGet("{id}", Name = "GetCharacter")]
-        public Character Get(int id)
-        {
-			return Repo.GetCharacterById(id);
-		}
+  //      [HttpGet("{id}", Name = "GetCharacter")]
+  //      public Character Get(int id)
+  //      {
+		//	return Repo.GetCharacterById(id);
+		//}
 
         // GET: api/Character/5
         [HttpGet("CharCampUsr/{id}", Name = "CharCampUsr")]
@@ -45,6 +45,13 @@ namespace ANightsTaleAPI.Controllers
         {
             int usrId = UserRepo.GetUserByUsername(username).UserID;
             return Repo.GetCharacterByCampUsr(id, usrId);
+        }
+
+        [HttpGet("{id}", Name = "CharCamp")]
+        public IEnumerable<Character> GetCharCamp(int id)
+        {
+
+            return Repo.GetCharacterByCamp(id);
         }
 
         // POST: api/Character
