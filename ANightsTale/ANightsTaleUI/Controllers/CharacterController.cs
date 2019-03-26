@@ -52,6 +52,7 @@ namespace ANightsTaleAPI.Controllers
             foreach (var item in Repo.GetCharacterByCampUsr(id, usrId))
             {
                 Models.Character character = new Models.Character();
+                character.CharacterID = item.CharacterID;
                 character.Name = item.Name;
                 character.Bio = item.Bio;
                 character.Race = Repo.GetRaceById(item.RaceID).Name;
@@ -97,6 +98,7 @@ namespace ANightsTaleAPI.Controllers
             foreach (var item in Repo.GetCharacterByCamp(id))
             {
                 Models.Character character = new Models.Character();
+                character.CharacterID = item.CharacterID;
                 character.Name = item.Name;
                 character.Bio = item.Bio;
                 character.Race = Repo.GetRaceById(item.RaceID).Name;
