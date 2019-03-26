@@ -16,11 +16,13 @@ namespace ANightsTaleAPI.Controllers
 
 		public CharacterRepository Repo { get; }
         public UserRepository UserRepo { get; }
+		public ItemRepository ItemRepo { get; }
 
-        public CharacterController(CharacterRepository repo, UserRepository userRepo)
+        public CharacterController(CharacterRepository repo, UserRepository userRepo,ItemRepository itemRepo)
 		{
 			Repo = repo;
             UserRepo = userRepo;
+			ItemRepo = itemRepo;
 		}
 
 
@@ -46,6 +48,25 @@ namespace ANightsTaleAPI.Controllers
             int usrId = UserRepo.GetUserByUsername(username).UserID;
             return Repo.GetCharacterByCampUsr(id, usrId);
         }
+
+		[HttpGet("Inventory/{id}", Name = "CharacterInv")]
+		public IEnumerable<Item> GetInv(int id)
+		{
+			var list = ItemRepo.GetAllInvetories().Where(x => x.CharacterID == id);
+			var items = new List<Item>();
+			foreach (var item in list)
+			{
+				items.Add(ItemRepo.GetItemById(item.ItemID));
+			}
+			return items;
+		}
+
+		[HttpPost("Inventory")]
+		public void Post([FromBody] Inventory invitem)
+		{
+			ItemRepo.CreateIventory(invitem);
+			ItemRepo.Save();
+		}
 
         // POST: api/Character
         [HttpPost]
