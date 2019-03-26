@@ -34,12 +34,12 @@ namespace ANightsTaleAPI.Controllers
 
         }
 
-        // GET: api/Character/5
-  //      [HttpGet("{id}", Name = "GetCharacter")]
-  //      public Character Get(int id)
-  //      {
-		//	return Repo.GetCharacterById(id);
-		//}
+        // GET: api/Character/GetCharacter/5
+        [HttpGet("GetCharacter/{id}", Name = "GetCharacter")]
+        public Character Get(int id)
+        {
+			return Repo.GetCharacterById(id);
+		}
 
         // GET: api/Character/5
         [HttpGet("CharCampUsr/{id}", Name = "CharCampUsr")]
