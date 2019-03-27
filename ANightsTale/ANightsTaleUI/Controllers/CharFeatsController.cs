@@ -21,7 +21,7 @@ namespace ANightsTaleAPI.Controllers
 			Repo = repo;
 		}
         // GET: api/CharFeats/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetFeats")]
         public List<Feats> Get(int id)
         {
 			var list = Repo.GetAllCharFeats().Where(x => x.CharacterId == id);
