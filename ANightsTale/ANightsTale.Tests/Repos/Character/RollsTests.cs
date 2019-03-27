@@ -88,25 +88,20 @@ namespace ANightsTale.Tests.Repos.Character
                 using (var context = new ANightsTaleContext(options))
                 {
                     var charRepo = new CharacterRepository(context, rand);
-                    DataSeeding seed = new DataSeeding(context, charRepo);
-                    seed.SeedCharacterSupportClasses();
-                    var character = seed.SeedCharacter();
-                    charRepo.AddCharacter(character);
-                    charRepo.Save();
+                    var character = new Library.Character();
 
                     List<int> rolls = new List<int>() { 5, 18, 10, 11, 12, 14};
 
                     charRepo.SetRolls(rolls, character);
-                    var test = charRepo.GetCharacterById(1);
 
                     // Assert
 
-                    Assert.Equal(5, test.Str);
-                    Assert.Equal(18, test.Dex);
-                    Assert.Equal(10, test.Con);
-                    Assert.Equal(11, test.Int);
-                    Assert.Equal(12, test.Wis);
-                    Assert.Equal(14, test.Cha);
+                    Assert.Equal(5, character.Str);
+                    Assert.Equal(18, character.Dex);
+                    Assert.Equal(10, character.Con);
+                    Assert.Equal(11, character.Int);
+                    Assert.Equal(12, character.Wis);
+                    Assert.Equal(14, character.Cha);
                 }
             }
             finally
