@@ -96,7 +96,7 @@ namespace ANightsTale.Tests.Repos.Character
 
                     List<int> rolls = new List<int>() { 5, 18, 10, 11, 12, 14};
 
-                    charRepo.SetRolls(rolls);
+                    charRepo.SetRolls(rolls, character);
                     var test = charRepo.GetCharacterById(1);
 
                     // Assert

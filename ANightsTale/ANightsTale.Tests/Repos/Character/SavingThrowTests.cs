@@ -180,7 +180,7 @@ namespace ANightsTale.Tests.Repos.Character
                     charRepo.AddCharStats(stats);
                     charRepo.Save();
 
-                    charRepo.SetSavingThrows();
+                    charRepo.SetSavingThrows(character, stats);
 
                     var s = context.CharStats.First();
 
@@ -228,7 +228,7 @@ namespace ANightsTale.Tests.Repos.Character
                     var charRepo = new CharacterRepository(context, rand);
 
                     // Assert
-                    Assert.ThrowsAny<ArgumentNullException>((Action)charRepo.SetSavingThrows);
+                    Assert.ThrowsAny<ArgumentNullException>(() => charRepo.SetSavingThrows(null, null));
                 }
             }
             finally
