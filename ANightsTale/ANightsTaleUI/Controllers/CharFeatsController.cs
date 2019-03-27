@@ -28,7 +28,7 @@ namespace ANightsTaleAPI.Controllers
 			var feats = new List<Feats>();
 			foreach (var item in list)
 			{
-				feats.Add(Repo.GetFeatById(item.CharacterId));
+				feats.Add(Repo.GetFeatById(item.FeatId));
 			}
 			return feats;
 		}
