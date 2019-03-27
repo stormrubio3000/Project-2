@@ -257,7 +257,7 @@ namespace ANightsTale.DataAccess.Repos
 
         public void SetSavingThrows(Library.Character character, Library.CharStats stats)
         {
-            if (character == null || stats == null)
+            if (character != null && stats != null)
             {
                 var proficiency = GetSavingThrowProficiency(character.ClassID).ToList();
                 int pb = stats.PB;
