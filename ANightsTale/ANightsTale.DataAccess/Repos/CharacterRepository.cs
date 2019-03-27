@@ -93,6 +93,16 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Character);
         }
 
+        public IEnumerable<Library.Race> GetAllRaces()
+        {
+            return Mapper.Map(_db.Race);
+        }
+
+        public IEnumerable<Library.Class> GetAllClasses()
+        {
+            return Mapper.Map(_db.Class);
+        }
+
         public IEnumerable<Library.Character> GetCharacterByCampUsr(int campId, int usrId)
         {
             return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId && c.UsersId == usrId));

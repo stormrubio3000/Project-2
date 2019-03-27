@@ -18,6 +18,8 @@ namespace ANightsTale.Library.Interfaces
         void RemoveClass(int id);
 
         IEnumerable<Character> GetAllCharacters();
+        IEnumerable<Race> GetAllRaces();
+        IEnumerable<Class> GetAllClasses();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
         IEnumerable<bool> GetSavingThrowProficiency(int classId);
