@@ -42,9 +42,9 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Campaign);
         }
 
-        public IEnumerable<Library.Info> GetAllInfos()
+        public IEnumerable<Library.Info> GetAllInfos(int id)
         {
-            return Mapper.Map(_db.Info);
+            return Mapper.Map(_db.Info.Where(r => r.CampaignId == id));
         }
 
         public Library.Campaign GetCampaignByName(string name)

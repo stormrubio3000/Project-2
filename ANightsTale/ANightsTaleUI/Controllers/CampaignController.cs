@@ -34,7 +34,26 @@ namespace ANightsTaleAPI.Controllers
         [HttpGet("{id}", Name = "GetCampaign")]
         public Campaign Get(int id)
         {
-			return Repo.GetCampaignById(id);
+            Campaign campaign = new Campaign();
+            
+            campaign.CampaignID = id;
+            campaign.Name = Repo.GetCampaignById(id).Name;
+            
+            List<Info> listInfo = new List<Info>();
+
+            foreach (var item in Repo.GetAllInfos(id))
+            {
+                Info info = new Info();
+                info.InfoID = item.InfoID;
+                info.Type = item.Type;
+                info.Message = item.Message;
+                info.CampaignID = item.CampaignID;
+                listInfo.Add(info);
+            }
+
+            campaign.Infos = listInfo;
+
+            return campaign;
         }
 
         // POST: api/Campaign
@@ -45,6 +64,13 @@ namespace ANightsTaleAPI.Controllers
         {
 			Repo.CreateCampaign(value);
 			Repo.Save();
+        }
+
+        [HttpPost("CreateInfo")]
+        public void Post([FromBody] Info info)
+        {
+            Repo.CreateInfo(info);
+            Repo.Save();
         }
     }
 }
