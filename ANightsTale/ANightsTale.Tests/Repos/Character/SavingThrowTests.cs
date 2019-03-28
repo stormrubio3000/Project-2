@@ -175,22 +175,16 @@ namespace ANightsTale.Tests.Repos.Character
 
                     var character = seed.SeedCharacter();
                     var stats = seed.SeedCharStats(character);
-                    charRepo.AddCharacter(character);
-                    charRepo.Save();
-                    charRepo.AddCharStats(stats);
-                    charRepo.Save();
 
-                    charRepo.SetSavingThrows();
-
-                    var s = context.CharStats.First();
+                    charRepo.SetSavingThrows(character, stats);
 
                     // Assert
-                    Assert.Equal(-3, s.StrSave);
-                    Assert.Equal(-1, s.DexSave);
-                    Assert.Equal(3, s.ConSave);
-                    Assert.Equal(2, s.IntSave);
-                    Assert.Equal(0, s.WisSave);
-                    Assert.Equal(-3, s.ChaSave);
+                    Assert.Equal(-3, stats.STR_Save);
+                    Assert.Equal(-1, stats.DEX_Save);
+                    Assert.Equal(3, stats.CON_Save);
+                    Assert.Equal(2, stats.INT_Save);
+                    Assert.Equal(0, stats.WIS_Save);
+                    Assert.Equal(-3, stats.CHA_Save);
                 }
             }
             finally
@@ -228,7 +222,7 @@ namespace ANightsTale.Tests.Repos.Character
                     var charRepo = new CharacterRepository(context, rand);
 
                     // Assert
-                    Assert.ThrowsAny<ArgumentNullException>((Action)charRepo.SetSavingThrows);
+                    Assert.ThrowsAny<ArgumentNullException>(() => charRepo.SetSavingThrows(null, null));
                 }
             }
             finally

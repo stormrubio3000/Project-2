@@ -9,7 +9,7 @@ using System.Text;
 namespace ANightsTale.DataAccess.Repos
 {
     public class AbilityRepository : IAbilityRepository
-    {
+	{
         private readonly ANightsTaleContext _db;
 
         public AbilityRepository(ANightsTaleContext db)
@@ -77,7 +77,37 @@ namespace ANightsTale.DataAccess.Repos
             _db.Entry(_db.Feats.Find(feat.FeatID)).CurrentValues.SetValues(Mapper.Map(feat));
         }
 
-        public void Save()
+		public IEnumerable<Library.CharFeats> GetAllCharFeats()
+		{
+			return Mapper.Map(_db.CharFeats);
+		}
+
+		public Library.CharFeats GetCharFeatById(int id)
+		{
+			return Mapper.Map(_db.CharFeats.AsNoTracking().First(r => r.FeatId == id));
+		}
+
+		public void CreateCharFeat(Library.CharFeats feat)
+		{
+			_db.Add(Mapper.Map(feat));
+		}
+
+		public IEnumerable<Library.CharAbilities> GetAllCharAbilities()
+		{
+			return Mapper.Map(_db.CharAbilities);
+		}
+
+		public Library.CharAbilities GetCharAbilitiesById(int id)
+		{
+			return Mapper.Map(_db.CharAbilities.AsNoTracking().First(r => r.AbilityId == id));
+		}
+
+		public void CreateCharAbilities(Library.CharAbilities ability)
+		{
+			_db.Add(Mapper.Map(ability));
+		}
+
+		public void Save()
         {
             _db.SaveChanges();
         }

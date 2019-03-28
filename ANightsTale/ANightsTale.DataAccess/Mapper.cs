@@ -182,6 +182,9 @@ namespace ANightsTale.DataAccess
         public static IEnumerable<Library.Abilities> Map(IEnumerable<Abilities> abilities) => abilities.Select(Map);
         public static IEnumerable<Abilities> Map(IEnumerable<Library.Abilities> abilities) => abilities.Select(Map);
 
+        public static IEnumerable<Library.Class> Map(IEnumerable<Class> c) => c.Select(Map);
+        public static IEnumerable<Class> Map(IEnumerable<Library.Class> c) => c.Select(Map);
+
         public static Library.Feats Map(Feats r) => new Library.Feats
         {
             FeatID = r.FeatId,
@@ -326,5 +329,38 @@ namespace ANightsTale.DataAccess
         public static IEnumerable<Library.Inventory> Map(IEnumerable<Inventory> iventory) => iventory.Select(Map);
         public static IEnumerable<Inventory> Map(IEnumerable<Library.Inventory> iventory) => iventory.Select(Map);
 
-    }
+		public static Library.CharAbilities Map(CharAbilities r) => new Library.CharAbilities
+		{
+			CharacterId = r.CharacterId,
+			AbilityId = r.AbilityId,
+			Mods = r.Mods
+		};
+
+		public static CharAbilities Map(Library.CharAbilities r) => new CharAbilities
+		{
+			CharacterId = r.CharacterId,
+			AbilityId = r.AbilityId,
+			Mods = r.Mods
+		};
+
+		public static IEnumerable<Library.CharAbilities> Map(IEnumerable<CharAbilities> charabilities) => charabilities.Select(Map);
+		public static IEnumerable<CharAbilities> Map(IEnumerable<Library.CharAbilities> CharAbilities) => CharAbilities.Select(Map);
+
+
+		public static Library.CharFeats Map(CharFeats r) => new Library.CharFeats
+		{
+			CharacterId = r.CharacterId,
+			FeatId = r.FeatId
+		};
+
+		public static CharFeats Map(Library.CharFeats r) => new CharFeats
+		{
+			CharacterId = r.CharacterId,
+			FeatId = r.FeatId
+		};
+
+		public static IEnumerable<Library.CharFeats> Map(IEnumerable<CharFeats> CharFeats) => CharFeats.Select(Map);
+		public static IEnumerable<CharFeats> Map(IEnumerable<Library.CharFeats> CharFeats) => CharFeats.Select(Map);
+
+	}
 }

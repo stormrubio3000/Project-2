@@ -93,6 +93,16 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Character);
         }
 
+        public IEnumerable<Library.Race> GetAllRaces()
+        {
+            return Mapper.Map(_db.Race);
+        }
+
+        public IEnumerable<Library.Class> GetAllClasses()
+        {
+            return Mapper.Map(_db.Class);
+        }
+
         public IEnumerable<Library.Character> GetCharacterByCampUsr(int campId, int usrId)
         {
             return Mapper.Map(_db.Character.Where(c => c.CampaignId == campId && c.UsersId == usrId));
@@ -247,7 +257,7 @@ namespace ANightsTale.DataAccess.Repos
 
         public void SetSavingThrows(Library.Character character, Library.CharStats stats)
         {
-            if (character == null || stats == null)
+            if (character != null && stats != null)
             {
                 var proficiency = GetSavingThrowProficiency(character.ClassID).ToList();
                 int pb = stats.PB;
