@@ -17,14 +17,14 @@ namespace ANightsTaleAPI.Controllers
 		public CharacterRepository Repo { get; }
         public UserRepository UserRepo { get; }
         public CampaignRepository CampRepo { get; }
-		public ItemRepository ItemRepo { get; }
+        public ItemRepository ItemRepo { get; }
 
-        public CharacterController(CharacterRepository repo, UserRepository userRepo, CampaignRepository campRepo, ItemRepository itemRepo)
+        public CharacterController(CharacterRepository repo, UserRepository userRepo,ItemRepository itemRepo, CampaignRepository campRepo)
 		{
 			Repo = repo;
             UserRepo = userRepo;
-            CampRepo = campRepo;
 			ItemRepo = itemRepo;
+            CampRepo = campRepo;
 		}
 
 
@@ -38,10 +38,28 @@ namespace ANightsTaleAPI.Controllers
 
         // GET: api/Character/GetCharacter/5
         [HttpGet("GetCharacter/{id}", Name = "GetCharacter")]
-        public Character Get(int id)
+        public Models.Character Get(int id)
         {
-			return Repo.GetCharacterById(id);
-		}
+            Models.Character character = new Models.Character();
+            character.CharacterID = Repo.GetCharacterById(id).CharacterID;
+            character.Name = Repo.GetCharacterById(id).Name;
+            character.Bio = Repo.GetCharacterById(id).Bio;
+            character.Race = Repo.GetRaceById(Repo.GetCharacterById(id).RaceID).Name;
+            character.Class = Repo.GetClassById(Repo.GetCharacterById(id).ClassID).Name;
+            character.CampaignName = CampRepo.GetCampaignById(Repo.GetCharacterById(id).CampaignID).Name;
+            character.Experience = Repo.GetCharacterById(id).Experience;
+            character.Level = Repo.GetCharacterById(id).Level;
+            character.Str = Repo.GetCharacterById(id).Str;
+            character.Dex = Repo.GetCharacterById(id).Dex;
+            character.Con = Repo.GetCharacterById(id).Con;
+            character.Int = Repo.GetCharacterById(id).Int;
+            character.Wis = Repo.GetCharacterById(id).Wis;
+            character.Cha = Repo.GetCharacterById(id).Cha;
+            character.Speed = Repo.GetCharacterById(id).Speed;
+            character.MaxHP = Repo.GetCharacterById(id).MaxHP;
+
+            return character;
+        }
 
         // GET: api/Character/5
         [HttpGet("CharCampUsr/{id}", Name = "CharCampUsr")]
@@ -64,7 +82,8 @@ namespace ANightsTaleAPI.Controllers
                 character.Dex = item.Dex;
                 character.Con = item.Con;
                 character.Int = item.Int;
-                character.Wis = item.Cha;
+                character.Wis = item.Wis;
+                character.Cha = item.Cha;
                 character.Speed = item.Speed;
                 character.MaxHP = item.MaxHP;
                 characters.Add(character);

@@ -16,7 +16,7 @@ namespace ANightsTale.Library.Interfaces
         void CreateInfo(Info info);
         void DeleteInfo(int id);
 
-        IEnumerable<Info> GetAllInfos();
+        IEnumerable<Info> GetAllInfos(int id);
         Info GetInfoId(int id);
 
         void Save();

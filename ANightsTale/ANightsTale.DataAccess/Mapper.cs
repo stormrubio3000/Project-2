@@ -235,12 +235,14 @@ namespace ANightsTale.DataAccess
         {
             CampaignID = r.CampaignId,
             Name = r.Name,
+            Infos = Map(r.Info).ToList()
         };
 
         public static Campaign Map(Library.Campaign r) => new Campaign
         {
             CampaignId = r.CampaignID,
             Name = r.Name,
+            Info = Map(r.Infos).ToList()
         };
 
         public static IEnumerable<Library.Campaign> Map(IEnumerable<Campaign> campaign) => campaign.Select(Map);

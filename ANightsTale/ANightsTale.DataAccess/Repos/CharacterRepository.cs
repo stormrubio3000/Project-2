@@ -132,6 +132,80 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Class.First(c => c.ClassId == id));
         }
 
+        public IEnumerable<Skill> GetSkillsByClass(int id)
+        {
+            var skills = new List<Skill>
+            {
+                new Skill(1, "Acrobatics"),
+                new Skill(2, "Animal Handling"),
+                new Skill(3, "Arcana"),
+                new Skill(4, "Athletics"),
+                new Skill(5, "Deception"),
+                new Skill(6, "History"),
+                new Skill(7, "Insight"),
+                new Skill(8, "Intimidation"),
+                new Skill(9, "Investigation"),
+                new Skill(10, "Medicine"),
+                new Skill(11, "Nature"),
+                new Skill(12, "Perception"),
+                new Skill(13, "Performance"),
+                new Skill(14, "Persuasion"),
+                new Skill(15, "Religion"),
+                new Skill(16, "Sleight of Hand"),
+                new Skill(17, "Stealth"),
+                new Skill(18, "Survival"),
+            };
+
+            switch (id)
+            {
+                case 1:
+                    // Barbarian {2,4,8,11,12,18}
+                    return skills.Where(s => s.Id == 2 || s.Id == 4 || s.Id == 8 ||
+                                             s.Id == 11 || s.Id == 12 || s.Id == 18);
+                case 2:
+                    // Fighter {1, 2, 4, 6, 7, 8, 12, 18}
+                    return skills.Where(s => s.Id == 1 || s.Id == 2 || s.Id == 4 ||
+                                             s.Id == 6 || s.Id == 7 || s.Id == 8 ||
+                                             s.Id == 12 || s.Id == 18);
+                case 3:
+                    // Paladin {4, 7, 8, 10, 14, 15} 
+                    return skills.Where(s => s.Id == 4 || s.Id == 7 || s.Id == 8 ||
+                                             s.Id == 10 || s.Id == 14 || s.Id == 15);
+                case 4:
+                    // Bard {All Skills}
+                    return skills;
+                case 5:
+                    // Sorcerer {3, 5, 7, 8, 14, 15}
+                    return skills.Where(s => s.Id == 3 || s.Id == 5 || s.Id == 7 ||
+                                             s.Id == 8 || s.Id == 14 || s.Id == 15);
+                case 6:
+                    // Cleric {6, 7, 10, 14, 15}
+                    return skills.Where(s => s.Id == 6 || s.Id == 7 || s.Id == 10 ||
+                                             s.Id == 14 || s.Id == 15);
+                case 7:
+                    // Druid {2, 3, 7, 10, 11, 12, 15, 18}
+                    return skills.Where(s => s.Id == 2 || s.Id == 3 || s.Id == 7 ||
+                                             s.Id == 10 || s.Id == 11 || s.Id == 12 ||
+                                             s.Id == 15 || s.Id == 18);
+                case 8:
+                    // Ranger {2, 4, 7, 9, 11, 12, 17, 18} 
+                    return skills.Where(s => s.Id == 2 || s.Id == 4 || s.Id == 7 ||
+                                             s.Id == 9 || s.Id == 11 || s.Id == 12 ||
+                                             s.Id == 17 || s.Id == 18);
+                case 9:
+                    // Rogue {1, 4, 5, 7, 8, 9, 12, 13, 14, 16, 17}
+                    return skills.Where(s => s.Id == 1 || s.Id == 2 || s.Id == 4 ||
+                                             s.Id == 6 || s.Id == 7 || s.Id == 8 ||
+                                             s.Id == 12 || s.Id == 18);
+                case 10:
+                    // Wizard {3, 6, 7, 9, 10, 15}
+                    return skills.Where(s => s.Id == 3 || s.Id == 6 || s.Id == 7 ||
+                                             s.Id == 9 || s.Id == 10 || s.Id == 15);
+            }
+
+            return skills;
+        }
+
         public Library.Character GetCharacterByName(string name)
         {
             if (_db.Character.Any(c => c.Name.Equals(name)))
