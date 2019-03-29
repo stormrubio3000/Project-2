@@ -16,7 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace ANightsTaleUI
 {
@@ -25,6 +27,10 @@ namespace ANightsTaleUI
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+			Log.Logger = new LoggerConfiguration()
+			.Enrich.FromLogContext()
+			.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+			.CreateLogger();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -32,6 +38,9 @@ namespace ANightsTaleUI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
+			services.AddLogging(loggingBuilder =>
+		    loggingBuilder.AddSerilog(dispose: true));
 			services.AddScoped<AbilityRepository>();
 			services.AddScoped<CampaignRepository>();
 			services.AddScoped<CharacterRepository>();
@@ -91,8 +100,17 @@ namespace ANightsTaleUI
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
+#pragma warning disable CS0618 // Type or member is obsolete
+			loggerFactory.AddConsole();
+#pragma warning restore CS0618 // Type or member is obsolete
+
+			//start logging to the console
+#pragma warning disable CS0618 // Type or member is obsolete
+			var logger = loggerFactory.CreateLogger<ConsoleLogger>();
+#pragma warning restore CS0618 // Type or member is obsolete
+			logger.LogInformation("Executing Configure()");
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
