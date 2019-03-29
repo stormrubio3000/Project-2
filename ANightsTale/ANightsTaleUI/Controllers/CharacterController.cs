@@ -93,6 +93,15 @@ namespace ANightsTaleAPI.Controllers
             return characters;
         }
 
+
+        [HttpGet("Rolls", Name = "CharacterRolls")]
+        public IEnumerable<int> GetRolls()
+        {
+            var rand = new RngProvider();
+            var rollManager = new RollManager(rand);
+            return rollManager.InitialRolls().ToList();
+        }
+
         [HttpGet("Class/{id}", Name = "CharacterSkills")]
         public IEnumerable<Skill> GetSkills(int id)
         {

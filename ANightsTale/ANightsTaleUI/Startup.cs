@@ -91,6 +91,26 @@ namespace ANightsTaleUI
 
             services.AddAuthentication();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    // for dev scenario, we can be pretty tolerant
+                    // in prod, we should be restrictive, we would fill in
+                    // only the origins where our Angular app was hosted.
+                    builder.WithOrigins(new[]
+                    {
+                        "http://localhost:4200",
+                        //"http://escalona1902pokeangular.azurewebsites.net",
+                        //"https://escalona1902pokeangular.azurewebsites.net"
+                    })
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             services.AddMvc(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -122,6 +142,7 @@ namespace ANightsTaleUI
 			}
 
             app.UseAuthentication();
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 			app.UseMvc();
