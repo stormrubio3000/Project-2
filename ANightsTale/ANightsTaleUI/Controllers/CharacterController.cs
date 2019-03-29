@@ -29,6 +29,7 @@ namespace ANightsTaleAPI.Controllers
 		}
 
 		Character buffer = new Character();
+		List<int> skillbuffer;
 
 		// GET: api/Character
 		[HttpGet]
@@ -155,9 +156,21 @@ namespace ANightsTaleAPI.Controllers
         }
 
 		[HttpPost]
-		public void Buffer([FromBody] Character chara)
+		public void Buffer([FromBody] Character chara,List<int> skills)
 		{
+			skillbuffer = skills;
 			buffer = chara;
+		}
+
+
+		[HttpPost]
+		public void AngCharacter(List<int> rolls)
+		{
+			var character = buffer;
+			var rng = new RngProvider();
+			var manager = new RollManager(rng);
+			manager.SetRolls(rolls, character);
+			Repo.CreateCharacter(character, skillbuffer);
 		}
     }
 }
