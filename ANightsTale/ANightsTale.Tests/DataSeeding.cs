@@ -37,6 +37,12 @@ namespace ANightsTale.Tests
             Library.Campaign camp = new Library.Campaign
             {
                 Name = "TestCamp",
+                Infos = new List<Library.Info> { new Library.Info
+                    {
+                        Message = "Yo",
+                        Type = "Test"
+                    }
+                }
             };
             _campRepo.CreateCampaign(camp);
             _campRepo.Save();

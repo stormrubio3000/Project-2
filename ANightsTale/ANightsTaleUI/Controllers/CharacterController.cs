@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ANightsTale.DataAccess.Repos;
 using ANightsTale.Library;
+using ANightsTale.Library.CharacterLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -91,7 +92,14 @@ namespace ANightsTaleAPI.Controllers
             return characters;
         }
 
-		[HttpGet("Inventory/{id}", Name = "CharacterInv")]
+        [HttpGet("Class/{id}", Name = "CharacterSkills")]
+        public IEnumerable<Skill> GetSkills(int id)
+        {
+            var skillManager = new SkillManager();
+            return skillManager.GetSkillsByClass(id);
+        }
+
+        [HttpGet("Inventory/{id}", Name = "CharacterInv")]
 		public IEnumerable<Item> GetInv(int id)
 		{
 			var list = ItemRepo.GetAllInvetories().Where(x => x.CharacterID == id);

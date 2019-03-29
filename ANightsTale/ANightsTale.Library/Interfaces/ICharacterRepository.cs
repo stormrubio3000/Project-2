@@ -22,21 +22,13 @@ namespace ANightsTale.Library.Interfaces
         IEnumerable<Class> GetAllClasses();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
-        IEnumerable<Skill> GetSkillsByClass(int id);
         IEnumerable<bool> GetSavingThrowProficiency(int classId);
 
         void SetSpeed(Character character);
         void SetMaxHp(Character character);
-        void SetRolls(IEnumerable<int> rolls, Library.Character character);
-        void SetModifiers(Character character, CharStats stats);
         void SetSavingThrows(Character character, CharStats stats);
-        void SetSkills(CharStats stats);
 
-        IEnumerable<int> InitialRolls();
-        List<int> ManageRolls();
-        int CalculateModifier(int val);
         int CalculateSavingThrow(int val, int pb, bool proficient);
-        void UpdateSkills(List<int> skills, CharStats stats);
 
         void Save();
     }

@@ -39,7 +39,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
 
                     seed.SeedCharacterSupportClasses();
@@ -87,7 +87,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedCharacterSupportClasses();
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ANightsTale.Library;
+using ANightsTale.Library.CharacterLogic;
 using ANightsTale.Library.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,16 +12,17 @@ namespace ANightsTale.DataAccess.Repos
     {
 
         private readonly ANightsTaleContext _db;
-        private readonly RngProvider _rand;
 
-        public CharacterRepository(ANightsTaleContext db, RngProvider rand)
+        public CharacterRepository(ANightsTaleContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _rand = rand ?? throw new ArgumentNullException(nameof(rand));
         }
 
         public void CreateCharacter(Library.Character character, IEnumerable<int> skills)
         {
+            var skillManager = new SkillManager();
+            var modManager = new ModifierManager();
+
             SetSpeed(character);
             SetMaxHp(character);
 
@@ -28,10 +30,10 @@ namespace ANightsTale.DataAccess.Repos
             stats.CharacterID = character.CharacterID;
             stats.HP = character.MaxHP;
 
-            SetModifiers(character, stats);
+            modManager.SetModifiers(character, stats);
             SetSavingThrows(character, stats);
-            SetSkills(stats);
-            UpdateSkills(skills.ToList(), stats);
+            skillManager.SetSkills(stats);
+            skillManager.UpdateSkills(skills.ToList(), stats);
 
             AddCharacter(character);
             Save();
@@ -132,80 +134,6 @@ namespace ANightsTale.DataAccess.Repos
             return Mapper.Map(_db.Class.First(c => c.ClassId == id));
         }
 
-        public IEnumerable<Skill> GetSkillsByClass(int id)
-        {
-            var skills = new List<Skill>
-            {
-                new Skill(1, "Acrobatics"),
-                new Skill(2, "Animal Handling"),
-                new Skill(3, "Arcana"),
-                new Skill(4, "Athletics"),
-                new Skill(5, "Deception"),
-                new Skill(6, "History"),
-                new Skill(7, "Insight"),
-                new Skill(8, "Intimidation"),
-                new Skill(9, "Investigation"),
-                new Skill(10, "Medicine"),
-                new Skill(11, "Nature"),
-                new Skill(12, "Perception"),
-                new Skill(13, "Performance"),
-                new Skill(14, "Persuasion"),
-                new Skill(15, "Religion"),
-                new Skill(16, "Sleight of Hand"),
-                new Skill(17, "Stealth"),
-                new Skill(18, "Survival"),
-            };
-
-            switch (id)
-            {
-                case 1:
-                    // Barbarian {2,4,8,11,12,18}
-                    return skills.Where(s => s.Id == 2 || s.Id == 4 || s.Id == 8 ||
-                                             s.Id == 11 || s.Id == 12 || s.Id == 18);
-                case 2:
-                    // Fighter {1, 2, 4, 6, 7, 8, 12, 18}
-                    return skills.Where(s => s.Id == 1 || s.Id == 2 || s.Id == 4 ||
-                                             s.Id == 6 || s.Id == 7 || s.Id == 8 ||
-                                             s.Id == 12 || s.Id == 18);
-                case 3:
-                    // Paladin {4, 7, 8, 10, 14, 15} 
-                    return skills.Where(s => s.Id == 4 || s.Id == 7 || s.Id == 8 ||
-                                             s.Id == 10 || s.Id == 14 || s.Id == 15);
-                case 4:
-                    // Bard {All Skills}
-                    return skills;
-                case 5:
-                    // Sorcerer {3, 5, 7, 8, 14, 15}
-                    return skills.Where(s => s.Id == 3 || s.Id == 5 || s.Id == 7 ||
-                                             s.Id == 8 || s.Id == 14 || s.Id == 15);
-                case 6:
-                    // Cleric {6, 7, 10, 14, 15}
-                    return skills.Where(s => s.Id == 6 || s.Id == 7 || s.Id == 10 ||
-                                             s.Id == 14 || s.Id == 15);
-                case 7:
-                    // Druid {2, 3, 7, 10, 11, 12, 15, 18}
-                    return skills.Where(s => s.Id == 2 || s.Id == 3 || s.Id == 7 ||
-                                             s.Id == 10 || s.Id == 11 || s.Id == 12 ||
-                                             s.Id == 15 || s.Id == 18);
-                case 8:
-                    // Ranger {2, 4, 7, 9, 11, 12, 17, 18} 
-                    return skills.Where(s => s.Id == 2 || s.Id == 4 || s.Id == 7 ||
-                                             s.Id == 9 || s.Id == 11 || s.Id == 12 ||
-                                             s.Id == 17 || s.Id == 18);
-                case 9:
-                    // Rogue {1, 4, 5, 7, 8, 9, 12, 13, 14, 16, 17}
-                    return skills.Where(s => s.Id == 1 || s.Id == 2 || s.Id == 4 ||
-                                             s.Id == 6 || s.Id == 7 || s.Id == 8 ||
-                                             s.Id == 12 || s.Id == 18);
-                case 10:
-                    // Wizard {3, 6, 7, 9, 10, 15}
-                    return skills.Where(s => s.Id == 3 || s.Id == 6 || s.Id == 7 ||
-                                             s.Id == 9 || s.Id == 10 || s.Id == 15);
-            }
-
-            return skills;
-        }
-
         public Library.Character GetCharacterByName(string name)
         {
             if (_db.Character.Any(c => c.Name.Equals(name)))
@@ -301,34 +229,6 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentException("No class with this ID exists."); }
         }
 
-        public void SetRolls(IEnumerable<int> rolls, Library.Character character)
-        {
-            var attributes = rolls.ToList();
-
-            character.Str = attributes[0];
-            character.Dex = attributes[1];
-            character.Con = attributes[2];
-            character.Int = attributes[3];
-            character.Wis = attributes[4];
-            character.Cha = attributes[5];
-        }
-
-        public void SetModifiers(Library.Character character, Library.CharStats stats)
-        {
-            if (character == null || stats == null)
-            {
-                stats.STR_Mod = CalculateModifier(character.Str);
-                stats.DEX_Mod = CalculateModifier(character.Dex);
-                stats.CON_Mod = CalculateModifier(character.Con);
-                stats.INT_Mod = CalculateModifier(character.Int);
-                stats.WIS_Mod = CalculateModifier(character.Wis);
-                stats.CHA_Mod = CalculateModifier(character.Cha);
-
-                character.MaxHP += stats.CON_Mod;
-            }
-            else { throw new ArgumentNullException("Character cannot be null..."); }
-        }
-
         public void SetSavingThrows(Library.Character character, Library.CharStats stats)
         {
             if (character != null && stats != null)
@@ -346,56 +246,6 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentNullException("Character cannot be null..."); }
         }
 
-        public List<int> ManageRolls()
-        {
-            List<int> rolls = new List<int>();
-
-            for (int j = 0; j < 4; j++)
-            {
-                rolls.Add(_rand.Rng.Next(1, 7));
-            }
-
-            return rolls.OrderBy(o => o).Skip(1).ToList();
-        }
-
-        public IEnumerable<int> InitialRolls()
-        {
-            List<int> rolls = new List<int>();
-            List<int> totals = new List<int>();
-
-            for (int i = 0; i < 6; i++)
-            {
-                rolls = ManageRolls();
-
-                totals.Add(rolls[0] + rolls[1] + rolls[2]);
-
-                rolls.Clear();
-            }
-
-            return totals;
-        }
-
-        public int CalculateModifier(int val)
-        {
-            if (val >= 1 || val <= 20)
-            {
-                if (val == 1) return -5;
-                else if (val == 2 || val == 3) return -4;
-                else if (val == 4 || val == 5) return -3;
-                else if (val == 6 || val == 7) return -2;
-                else if (val == 8 || val == 9) return -1;
-                else if (val == 10 || val == 11) return 0;
-                else if (val == 12 || val == 13) return 1;
-                else if (val == 14 || val == 15) return 2;
-                else if (val == 16 || val == 17) return 3;
-                else if (val == 18 || val == 19) return 4;
-                else return 5;
-            }
-            else {
-                throw new ArgumentOutOfRangeException("Attributes must be between 1 and 20 inclusive");
-            }
-        }
-
         public int CalculateSavingThrow(int val, int pb, bool proficient)
         {
             if (proficient)
@@ -403,122 +253,6 @@ namespace ANightsTale.DataAccess.Repos
                 return val + pb;
             }
             return val;
-        }
-
-        public void SetSkills(Library.CharStats stats)
-        {
-            //STR
-            stats.Athletics = stats.STR_Mod;
-
-            //DEX
-            stats.Acrobatics = stats.DEX_Mod;
-            stats.SleightOfHand = stats.DEX_Mod;
-            stats.Stealth = stats.DEX_Mod;
-
-            //INT
-            stats.Arcana = stats.INT_Mod;
-            stats.History = stats.INT_Mod;
-            stats.Investigation = stats.INT_Mod;
-            stats.Nature = stats.INT_Mod;
-            stats.Religion = stats.INT_Mod;
-
-            //WIS
-            stats.AnimalHandling = stats.WIS_Mod;
-            stats.Insight = stats.WIS_Mod;
-            stats.Medicine = stats.WIS_Mod;
-            stats.Perception = stats.WIS_Mod;
-            stats.Survival = stats.WIS_Mod;
-
-            //CHA
-            stats.Deception = stats.CHA_Mod;
-            stats.Intimidation = stats.CHA_Mod;
-            stats.Persuasion = stats.CHA_Mod;
-            stats.Performance = stats.CHA_Mod;
-        }
-
-        public void UpdateSkills(List<int> skills, Library.CharStats stats)
-        {
-            foreach (int skill in skills)
-            {
-                switch (skill)
-                {
-                    case 1:
-                        // Acrobatics
-                        stats.Acrobatics += stats.PB;
-                        break;
-                    case 2:
-                        // AnimalHandling
-                        stats.AnimalHandling += stats.PB;
-                        break;
-                    case 3:
-                        // Arcana
-                        stats.Arcana += stats.PB;
-                        break;
-                    case 4:
-                        // Athletics
-                        stats.Athletics += stats.PB;
-                        break;
-                    case 5:
-                        // Deception
-                        stats.Deception += stats.PB;
-                        break;
-                    case 6:
-                        // History
-                        stats.History += stats.PB;
-                        break;
-                    case 7:
-                        // Insight
-                        stats.Insight += stats.PB;
-                        break;
-                    case 8:
-                        // Intimidation
-                        stats.Intimidation += stats.PB;
-                        break;
-                    case 9:
-                        // Investigation
-                        stats.Investigation += stats.PB;
-                        break;
-                    case 10:
-                        // Medicine
-                        stats.Medicine += stats.PB;
-                        break;
-                    case 11:
-                        // Nature
-                        stats.Nature += stats.PB;
-                        break;
-                    case 12:
-                        // Perception
-                        stats.Perception += stats.PB;
-                        break;
-                    case 13:
-                        // Performance
-                        stats.Performance += stats.PB;
-                        break;
-                    case 14:
-                        // Persuasion
-                        stats.Persuasion += stats.PB;
-                        break;
-                    case 15:
-                        // Religion
-                        stats.Religion += stats.PB;
-                        break;
-                    case 16:
-                        // Sleight Of Hand
-                        stats.SleightOfHand += stats.PB;
-                        break;
-                    case 17:
-                        // Stealth
-                        stats.Stealth += stats.PB;
-                        break;
-                    case 18:
-                        // Survival
-                        stats.Survival += stats.PB;
-                        break;
-                    default:
-                        throw new ArgumentException("This skill does not exist.");
-                }
-            }
-
         }
 
         public void Save()

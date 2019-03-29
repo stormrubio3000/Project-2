@@ -23,7 +23,6 @@ namespace ANightsTale.Tests.Repos.Character
 
             try
             {
-                var rand = new RngProvider();
                 var options = new DbContextOptionsBuilder<ANightsTaleContext>()
                     .UseSqlite(connection)
                     .Options;
@@ -39,7 +38,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedCharacterSupportClasses();
 
@@ -84,7 +83,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
 
                     // Assert
                     Assert.ThrowsAny<ArgumentNullException>(() => charRepo.AddCharacter(null));
@@ -122,7 +121,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedCharacterSupportClasses();
 
@@ -172,7 +171,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
 
                     // Assert
                     Assert.ThrowsAny<ArgumentNullException>(() => charRepo.AddCharStats(null));
@@ -210,7 +209,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedRace(1);
                     
@@ -252,7 +251,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
 
                     // Assert
                     Assert.ThrowsAny<ArgumentNullException>(() => charRepo.AddRace(null));
@@ -290,7 +289,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
                     DataSeeding seed = new DataSeeding(context, charRepo);
                     seed.SeedClass(1);
 
@@ -332,7 +331,7 @@ namespace ANightsTale.Tests.Repos.Character
                 // Run the test against one instance of the context
                 using (var context = new ANightsTaleContext(options))
                 {
-                    var charRepo = new CharacterRepository(context, rand);
+                    var charRepo = new CharacterRepository(context);
 
                     // Assert
                     Assert.ThrowsAny<ArgumentNullException>(() => charRepo.AddClass(null));
