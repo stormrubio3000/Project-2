@@ -9,7 +9,7 @@ namespace ANightsTale.Library.CharacterLogic
     {
         public void SetModifiers(Library.Character character, Library.CharStats stats)
         {
-            if (character == null || stats == null)
+            if (character != null || stats != null)
             {
                 stats.STR_Mod = CalculateModifier(character.Str);
                 stats.DEX_Mod = CalculateModifier(character.Dex);
