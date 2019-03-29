@@ -96,7 +96,7 @@ namespace ANightsTaleAPI.Controllers
         public IEnumerable<Skill> GetSkills(int id)
         {
             var skillManager = new SkillManager();
-            return skillManager.GetSkillsByClass(id);
+            return skillManager.GetSkillsByClass(id).ToList();
         }
 
         [HttpGet("Inventory/{id}", Name = "CharacterInv")]
