@@ -28,6 +28,7 @@ namespace ANightsTaleAPI.Controllers
             CampRepo = campRepo;
 		}
 
+		Character buffer = new Character();
 
 		// GET: api/Character
 		[HttpGet]
@@ -152,5 +153,11 @@ namespace ANightsTaleAPI.Controllers
 			Repo.AddCharacter(value);
 			Repo.Save();
         }
+
+		[HttpPost]
+		public void Buffer([FromBody] Character chara)
+		{
+			buffer = chara;
+		}
     }
 }
