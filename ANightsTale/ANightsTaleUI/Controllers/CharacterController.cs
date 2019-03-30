@@ -164,12 +164,12 @@ namespace ANightsTaleAPI.Controllers
 			Repo.Save();
         }
 
-		[HttpPost]
-		public void Buffer([FromBody] Character chara,List<int> skills)
-		{
-			skillbuffer = skills;
-			buffer = chara;
-		}
+		//[HttpPost]
+		//public void Buffer([FromBody] Character chara,List<int> skills)
+		//{
+		//	skillbuffer = skills;
+		//	buffer = chara;
+		//}
 
 
 		[HttpPost]
