@@ -161,8 +161,9 @@ namespace ANightsTaleAPI.Controllers
 			buffer = buff;
 		}
 
-		[HttpPost]
-		public void AngCharacter(ICollection<int> rolls)
+
+		[HttpPost("AngCharacter")]
+		public void AngCharacter([FromBody]ICollection<int> rolls)
 		{
 			var character = Map(buffer);
 			var rng = new RngProvider();
