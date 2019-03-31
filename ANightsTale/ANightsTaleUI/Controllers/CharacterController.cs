@@ -28,8 +28,7 @@ namespace ANightsTaleAPI.Controllers
             CampRepo = campRepo;
 		}
 
-		Character buffer = new Character();
-		List<int> skillbuffer;
+        CharacterBuffer buffer = new CharacterBuffer();
 
 		// GET: api/Character
 		[HttpGet]
@@ -156,30 +155,37 @@ namespace ANightsTaleAPI.Controllers
             return characters;
         }
 
-        // POST: api/Character
-        [HttpPost]
-        public void Post([FromBody] Character value)
-        {
-			Repo.AddCharacter(value);
-			Repo.Save();
-        }
-
-		//[HttpPost]
-		//public void Buffer([FromBody] Character chara,List<int> skills)
-		//{
-		//	skillbuffer = skills;
-		//	buffer = chara;
-		//}
-
+		[HttpPost("Buffer")]
+		public void BufferCharacter([FromBody] CharacterBuffer buff)
+		{
+			buffer = buff;
+		}
 
 		[HttpPost]
-		public void AngCharacter(List<int> rolls)
+		public void AngCharacter(ICollection<int> rolls)
 		{
-			var character = buffer;
+			var character = Map(buffer);
 			var rng = new RngProvider();
 			var manager = new RollManager(rng);
 			manager.SetRolls(rolls, character);
-			Repo.CreateCharacter(character, skillbuffer);
+			Repo.CreateCharacter(character, buffer.MySkills);
 		}
+
+        public Character Map(CharacterBuffer buff)
+        {
+            var character = new Character()
+            {
+                Name = buffer.Name,
+                Bio = buffer.Bio,
+                CampaignID = buffer.CampaignID,
+                UserId = UserRepo.GetUserByUsername(buffer.Username).UserID,
+                RaceID = buffer.RaceID,
+                ClassID = buffer.ClassID,
+                Experience = 0,
+                Level = 1
+            };
+
+            return character;
+        }
     }
 }
