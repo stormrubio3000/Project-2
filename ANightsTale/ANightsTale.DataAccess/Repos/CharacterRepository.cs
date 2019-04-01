@@ -57,6 +57,7 @@ namespace ANightsTale.DataAccess.Repos
 
         public void AddCharStats(Library.CharStats stats)
         {
+            stats.CharacterID = _db.Character.Last().CharacterId;
             if (stats != null) { _db.Add(Mapper.Map(stats)); }
             else { throw new ArgumentNullException(); }
         }

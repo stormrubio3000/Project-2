@@ -248,6 +248,21 @@ namespace ANightsTale.DataAccess
         public static IEnumerable<Library.Campaign> Map(IEnumerable<Campaign> campaign) => campaign.Select(Map);
         public static IEnumerable<Campaign> Map(IEnumerable<Library.Campaign> campaign) => campaign.Select(Map);
 
+        //public static CampaignCreate Map(Campaign r) => new CampaignCreate
+        //{
+        //    CampaignID = r.CampaignId,
+        //    Name = r.Name,
+        //};
+
+        public static Campaign Map(CampaignCreate r) => new Campaign
+        {
+            CampaignId = r.CampaignID,
+            Name = r.Name,
+        };
+
+        //public static IEnumerable<CampaignCreate> Map(IEnumerable<Campaign> campaign) => campaign.Select(Map);
+        public static IEnumerable<Campaign> Map(IEnumerable<CampaignCreate> campaign) => campaign.Select(Map);
+
         public static Library.Info Map(Info r) => new Library.Info
         {
             InfoID = r.InfoId,

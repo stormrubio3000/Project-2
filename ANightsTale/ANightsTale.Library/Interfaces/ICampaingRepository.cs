@@ -6,7 +6,7 @@ namespace ANightsTale.Library.Interfaces
 {
     public interface ICampaignRepository
 	{
-        void CreateCampaign(Campaign campaign);
+        void CreateCampaign(CampaignCreate campaign);
         void DeleteCampaign(int id);
 
         IEnumerable<Campaign> GetAllCampaigns();

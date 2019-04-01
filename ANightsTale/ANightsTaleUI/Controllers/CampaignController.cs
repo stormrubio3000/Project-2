@@ -60,7 +60,7 @@ namespace ANightsTaleAPI.Controllers
         [HttpPost]
 		[ProducesResponseType(typeof(Campaign), StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public void Post([FromBody] Campaign value)
+		public void Post([FromBody] CampaignCreate value)
         {
 			Repo.CreateCampaign(value);
 			Repo.Save();
