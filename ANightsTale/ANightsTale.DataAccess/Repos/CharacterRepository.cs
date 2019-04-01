@@ -29,6 +29,7 @@ namespace ANightsTale.DataAccess.Repos
             var stats = new Library.CharStats();
             stats.CharacterID = character.CharacterID;
             stats.HP = character.MaxHP;
+            stats.PB = 2;
 
             modManager.SetModifiers(character, stats);
             SetSavingThrows(character, stats);

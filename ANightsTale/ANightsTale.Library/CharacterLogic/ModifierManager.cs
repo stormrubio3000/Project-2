@@ -18,6 +18,7 @@ namespace ANightsTale.Library.CharacterLogic
                 stats.WIS_Mod = CalculateModifier(character.Wis);
                 stats.CHA_Mod = CalculateModifier(character.Cha);
 
+                stats.AC = 10 + stats.DEX_Mod;
                 character.MaxHP += stats.CON_Mod;
             }
             else { throw new ArgumentNullException("Character cannot be null..."); }
