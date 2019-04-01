@@ -22,6 +22,7 @@ namespace ANightsTale.Library.Interfaces
         IEnumerable<Class> GetAllClasses();
         Character GetCharacterById(int id);
         Character GetCharacterByName(string name);
+        CharStats GetCharStatsById(int id);
         IEnumerable<bool> GetSavingThrowProficiency(int classId);
 
         void SetSpeed(Character character);

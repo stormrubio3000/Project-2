@@ -93,6 +93,12 @@ namespace ANightsTaleAPI.Controllers
             return characters;
         }
 
+        [HttpGet("Stats/{id}")]
+        public CharStats GetStats(int id)
+        {
+            return Repo.GetCharStatsById(id);
+        }
+
 
         [HttpGet("Rolls", Name = "CharacterRolls")]
         public IEnumerable<int> GetRolls()

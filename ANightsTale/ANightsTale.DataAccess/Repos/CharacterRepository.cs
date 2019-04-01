@@ -124,6 +124,15 @@ namespace ANightsTale.DataAccess.Repos
             else { throw new ArgumentException("No existing characters with this ID."); }
         }
 
+        public Library.CharStats GetCharStatsById(int id)
+        {
+            if (_db.CharStats.Any(c => c.CharacterId == id))
+            {
+                return Mapper.Map(_db.CharStats.First(c => c.CharacterId == id));
+            }
+            else { throw new ArgumentException("No stats exist for this character"); }
+        }
+
         public Library.Race GetRaceById(int id)
         {
             return Mapper.Map(_db.Race.First(c => c.RaceId == id));
