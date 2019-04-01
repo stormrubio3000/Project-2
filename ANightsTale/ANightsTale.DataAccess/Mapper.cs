@@ -163,7 +163,7 @@ namespace ANightsTale.DataAccess
         {
             AbilityID = r.AbilityId,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             NumDice = r.NumDice,
             NumSides = r.NumSides,
             Attack = r.Attack
@@ -173,7 +173,7 @@ namespace ANightsTale.DataAccess
         {
             AbilityId = r.AbilityID,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             NumDice = r.NumDice,
             NumSides = r.NumSides,
             Attack = r.Attack
@@ -189,7 +189,7 @@ namespace ANightsTale.DataAccess
         {
             FeatID = r.FeatId,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             Mods = r.Mods,
             StatTable = r.StatTable,
             StatType = r.StatType
@@ -199,7 +199,7 @@ namespace ANightsTale.DataAccess
         {
             FeatId = r.FeatID,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             Mods = r.Mods,
             StatTable = r.StatTable,
             StatType = r.StatType
@@ -212,7 +212,7 @@ namespace ANightsTale.DataAccess
         {
             ItemID = r.ItemId,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             NumDice = r.NumDice,
             NumSides = r.NumSides,
             Mods = r.Mods
@@ -222,7 +222,7 @@ namespace ANightsTale.DataAccess
         {
             ItemId = r.ItemID,
             Name = r.Name,
-            Description = r.Name,
+            Description = r.Description,
             NumDice = r.NumDice,
             NumSides = r.NumSides,
             Mods = r.Mods
