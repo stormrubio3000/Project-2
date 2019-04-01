@@ -34,15 +34,9 @@ namespace ANightsTale.Tests
             _userRepo.CreateUser(user);
             _userRepo.Save();
 
-            Library.Campaign camp = new Library.Campaign
+            Library.CampaignCreate camp = new Library.CampaignCreate
             {
                 Name = "TestCamp",
-                Infos = new List<Library.Info> { new Library.Info
-                    {
-                        Message = "Yo",
-                        Type = "Test"
-                    }
-                }
             };
             _campRepo.CreateCampaign(camp);
             _campRepo.Save();
