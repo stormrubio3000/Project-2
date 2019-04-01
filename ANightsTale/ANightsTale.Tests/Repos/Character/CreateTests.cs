@@ -174,7 +174,7 @@ namespace ANightsTale.Tests.Repos.Character
                     var charRepo = new CharacterRepository(context);
 
                     // Assert
-                    Assert.ThrowsAny<ArgumentNullException>(() => charRepo.AddCharStats(null));
+                    Assert.ThrowsAny<Exception>(() => charRepo.AddCharStats(null));
                 }
             }
             finally
