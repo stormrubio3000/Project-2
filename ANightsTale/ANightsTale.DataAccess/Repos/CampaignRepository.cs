@@ -17,7 +17,7 @@ namespace ANightsTale.DataAccess.Repos
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void CreateCampaign(Library.Campaign campaign)
+        public void CreateCampaign(CampaignCreate campaign)
         {
             _db.Add(Mapper.Map(campaign));
         }
