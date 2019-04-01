@@ -28,7 +28,7 @@ namespace ANightsTaleAPI.Controllers
             CampRepo = campRepo;
 		}
 
-        CharacterBuffer buffer = new CharacterBuffer();
+        static CharacterBuffer buffer = new CharacterBuffer();
 
 		// GET: api/Character
 		[HttpGet]
@@ -147,7 +147,8 @@ namespace ANightsTaleAPI.Controllers
                 character.Dex = item.Dex;
                 character.Con = item.Con;
                 character.Int = item.Int;
-                character.Wis = item.Cha;
+                character.Wis = item.Wis;
+                character.Cha = item.Cha;
                 character.Speed = item.Speed;
                 character.MaxHP = item.MaxHP;
                 characters.Add(character);
